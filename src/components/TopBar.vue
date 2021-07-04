@@ -1,9 +1,9 @@
 <template>
-	<div class="topbar d-flex align-items-center">
+	<div class="topbar d-flex align-items-center ">
 		<b-container
-			class="d-flex align-items-center justify-content-between d-none d-md-flex"
+			class="d-flex align-items-center justify-content-between topbar-inner"
 		>
-			<div class="search-wrapper d-flex align-items-center">
+			<div class="search-wrapper d-flex align-items-center d-none d-sm-flex">
 				<b-form-input
 					class="search"
 					size="sm"
@@ -11,12 +11,12 @@
 				/>
 				<b-icon icon="search" />
 			</div>
-			<div class="login-cart-wrapper d-flex justify-content-between">
+			<div class="login-cart-wrapper d-flex justify-content-between ">
 				<div>
 					Cart
 					<b-icon icon="cart-fill" variant="light" />
 				</div>
-				<div>Login</div>
+				<div class="d-none d-sm-flex">Login</div>
 			</div>
 		</b-container>
 	</div>
@@ -37,6 +37,7 @@ export default {};
 }
 .search-wrapper {
 	width: 35%;
+	min-width: 250px;
 }
 .search {
 	text-align: center;
@@ -48,5 +49,11 @@ export default {};
 	position: relative;
 	right: 25px;
 	color: var(--main-color);
+}
+@media (max-width: 575px) {
+	.topbar-inner,
+	.login-cart-wrapper {
+		justify-content: flex-end !important;
+	}
 }
 </style>

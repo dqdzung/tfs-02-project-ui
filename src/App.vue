@@ -1,16 +1,73 @@
 <template>
 	<div>
-		<Header></Header>
+		<Topbar />
+		<Navbar />
+		<div class="main-content">
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+			<p>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
+				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
+				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
+				consequuntur consequatur vitae labore numquam enim similique ex corporis
+				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
+			</p>
+		</div>
+		<Footer />
 	</div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
+import Topbar from "./components/Topbar.vue";
+import Navbar from "./components/Navbar.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
 	name: "App",
 	components: {
-		Header,
+		Topbar,
+		Navbar,
+		Footer,
 	},
 };
 </script>
