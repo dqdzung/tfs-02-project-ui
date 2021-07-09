@@ -1,5 +1,5 @@
 <template>
-	<div class="shadow p-2 mb-3 bg-white rounded sticky-top">
+	<div class="shadow mb-3 bg-white sticky-top">
 		<b-container>
 			<b-navbar toggleable="sm" type="light">
 				<b-navbar-brand href="#">Pet Pal</b-navbar-brand>

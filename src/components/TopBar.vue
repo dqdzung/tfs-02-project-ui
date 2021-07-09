@@ -1,5 +1,5 @@
 <template>
-	<div class="topbar d-flex align-items-center ">
+	<div class="topbar d-flex align-items-center">
 		<b-container
 			class="d-flex align-items-center justify-content-between topbar-inner"
 		>
@@ -12,18 +12,40 @@
 				<b-icon icon="search" />
 			</div>
 			<div class="login-cart-wrapper d-flex justify-content-between ">
-				<div>
+				<div class="cart-wrapper">
 					Cart
 					<b-icon icon="cart-fill" variant="light" />
 				</div>
-				<div class="d-none d-sm-flex">Login</div>
+				<div
+					v-if="!login"
+					@click="showModal"
+					class="topbar-login d-none d-sm-flex"
+				>
+					Login
+				</div>
+				<div v-else class="topbar-login d-none d-sm-flex">
+					Hello, user!
+				</div>
 			</div>
 		</b-container>
 	</div>
 </template>
 
 <script>
-export default {};
+export default {
+	name: "TopBar",
+	props: {
+		login: Boolean,
+	},
+	methods: {
+		showModal() {
+			this.$bvModal.show("login-modal");
+		},
+		submit() {
+			console.log("login clicked");
+		},
+	},
+};
 </script>
 
 <style>
@@ -32,8 +54,17 @@ export default {};
 	background-color: var(--main-color);
 	color: white;
 }
-.login-cart-wrapper {
-	width: 100px;
+.topbar-login {
+	padding-left: 15px;
+	border-left: 1px white solid;
+	cursor: pointer;
+}
+.modal-login-button {
+	background-color: var(--main-color);
+	border: var(--main-color);
+}
+.cart-wrapper {
+	padding-right: 15px;
 }
 .search-wrapper {
 	width: 35%;
@@ -55,5 +86,11 @@ export default {};
 	.login-cart-wrapper {
 		justify-content: flex-end !important;
 	}
+}
+.modal-footer-inner {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 </style>

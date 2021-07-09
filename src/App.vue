@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Topbar />
+		<TopBar :login="isLoggedIn" />
 		<Navbar />
 		<div class="main-content">
 			<p>
@@ -54,27 +54,29 @@
 			</p>
 		</div>
 		<Footer />
+		<LoginModal @on-login="onLogin" />
 	</div>
 </template>
 
 <script>
-import Topbar from "./components/Topbar.vue";
+import TopBar from "./components/TopBar.vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
+import LoginModal from "./components/LoginModal.vue";
+import "./assets/main.css";
 
 export default {
 	name: "App",
 	components: {
-		Topbar,
+		TopBar,
 		Navbar,
 		Footer,
+		LoginModal,
+	},
+	data() {
+		return {
+			isLoggedIn: false,
+		};
 	},
 };
 </script>
-
-<style>
-:root {
-	--main-color: #fdbc1c;
-	--header-font: "Great Vibes", cursive;
-}
-</style>
