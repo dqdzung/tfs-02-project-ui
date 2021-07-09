@@ -17,14 +17,14 @@
 					<b-icon icon="cart-fill" variant="light" />
 				</div>
 				<div
-					v-if="!login"
-					@click="showModal"
+					v-if="!loginStatus"
+					@click="showLoginModal"
 					class="topbar-login d-none d-sm-flex"
 				>
 					Login
 				</div>
-				<div v-else class="topbar-login d-none d-sm-flex">
-					Hello, user!
+				<div v-else class="topbar-login d-none d-sm-flex" @click="handleLogout">
+					Logout
 				</div>
 			</div>
 		</b-container>
@@ -35,14 +35,14 @@
 export default {
 	name: "TopBar",
 	props: {
-		login: Boolean,
+		loginStatus: Boolean,
 	},
 	methods: {
-		showModal() {
+		showLoginModal() {
 			this.$bvModal.show("login-modal");
 		},
-		submit() {
-			console.log("login clicked");
+		handleLogout() {
+			localStorage.removeItem("token");
 		},
 	},
 };

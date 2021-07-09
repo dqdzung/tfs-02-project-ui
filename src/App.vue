@@ -1,60 +1,10 @@
 <template>
 	<div>
-		<TopBar :login="isLoggedIn" />
+		<TopBar :loginStatus="isLoggedIn" />
 		<Navbar />
-		<div class="main-content">
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-			<p>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum minus
-				repellendus a ea quibusdam vel dolore. Nam ipsum provident ex error, at
-				numquam sunt. Corrupti eius, atque tempora facere rem libero quas
-				consequuntur consequatur vitae labore numquam enim similique ex corporis
-				eveniet, adipisci repudiandae impedit ullam eligendi quos tempore autem!
-			</p>
-		</div>
+		<router-view />
 		<Footer />
-		<LoginModal @on-login="onLogin" />
+		<LoginModal />
 	</div>
 </template>
 
@@ -63,6 +13,7 @@ import TopBar from "./components/TopBar.vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import LoginModal from "./components/LoginModal.vue";
+
 import "./assets/main.css";
 
 export default {
@@ -73,10 +24,15 @@ export default {
 		Footer,
 		LoginModal,
 	},
-	data() {
-		return {
-			isLoggedIn: false,
-		};
+	computed: {
+		isLoggedIn() {
+			const token = localStorage.getItem("token");
+			return token ? true : false;
+		},
 	},
+	data() {
+		return {};
+	},
+	methods: {},
 };
 </script>

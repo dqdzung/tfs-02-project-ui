@@ -8,7 +8,7 @@
 		</template>
 
 		<template>
-			<b-form @submit.prevent="onSubmit">
+			<b-form @submit.prevent="handleLogin">
 				<b-form-input
 					id="input-1"
 					type="email"
@@ -53,11 +53,12 @@ export default {
 				state: null,
 				message: "",
 			},
+			isLoggedIn: false,
 		};
 	},
+
 	methods: {
-		async onSubmit() {
-			// console.log("clicked");
+		async handleLogin() {
 			try {
 				const res = await axios({
 					method: "POST",
@@ -70,19 +71,19 @@ export default {
 						"Access-Control-Allow-Origin": "*",
 					},
 				});
+
 				if (res.data.success) {
-					this.hideModal();
-					this.clearInput();
+					console.log("logged in");
 					localStorage.setItem("token", res.data.data.token);
+					this.hideModal();
+					this.isLoggedIn = true;
 				}
 			} catch (err) {
-				this.error.state = false;
-				this.error.message = "Wrong email or password!";
-				this.password = "";
+				console.log(err);
+				this.displayError();
 			}
 		},
 		hideModal() {
-			console.log("clicked");
 			this.clearInput();
 			this.$bvModal.hide("login-modal");
 		},
@@ -93,8 +94,11 @@ export default {
 		clearInput() {
 			this.email = "";
 			this.password = "";
-			this.error.message = "";
-			this.error.state = null;
+		},
+		displayError() {
+			this.password = "";
+			this.error.state = false;
+			this.error.message = "Wrong Email or Password!";
 		},
 	},
 };
