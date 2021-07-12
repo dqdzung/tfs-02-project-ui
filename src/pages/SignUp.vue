@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import bcrypt from "bcryptjs";
 import ErrorMessage from "../components/ErrorMessage.vue";
 
 export default {
@@ -91,17 +93,49 @@ export default {
 		};
 	},
 	methods: {
-		handleSignUp() {
-			if (this.validateForm()) {
-				console.log("form is valid");
+		async handleSignUp() {
+			if (!this.validateForm()) {
+				console.log("form is invalid");
+				// alert("invalid form");
+				return;
 			}
-			console.log("form is invalid");
+			const hashPassword = bcrypt.hashSync(
+				this.password.value,
+				bcrypt.genSaltSync(10)
+			);
+
+			try {
+				const res = await axios({
+					method: "POST",
+					url: "http://localhost:8081/api/auth/signup",
+					data: {
+						email: this.email.value,
+						password: hashPassword,
+						name: this.name.value,
+					},
+					headers: {
+						"Access-Control-Allow-Origin": "*",
+					},
+				});
+
+				if (res.data.success) {
+					// console.log(res);
+					if (confirm("Do you want to login?")) {
+						this.$router.push("/login");
+					}
+				}
+			} catch (err) {
+				this.email.isValid = false;
+				alert(err.response.data.message);
+			}
 		},
+
 		clearError() {
 			this.email.isValid = this.name.isValid = this.password.isValid = this.confirmPassword.isValid = null;
 			this.email.error = this.name.error = this.password.error = this.confirmPassword.error =
 				"";
 		},
+
 		validateForm() {
 			let isFormValid = true;
 			if (this.email.value === "") {
@@ -116,7 +150,7 @@ export default {
 				isFormValid = false;
 			}
 
-			if (this.password.value.length <= 6) {
+			if (this.password.value.length < 6) {
 				this.password.isValid = false;
 				this.password.error = "Password must be at least 6 characters long!";
 				isFormValid = false;
@@ -133,6 +167,7 @@ export default {
 				this.confirmPassword.error = "Password doesn't match!";
 				isFormValid = false;
 			}
+
 			return isFormValid;
 		},
 	},
