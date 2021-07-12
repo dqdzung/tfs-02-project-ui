@@ -53,7 +53,7 @@ export default {
 
 <style>
 .navbar-brand {
-	font-family: var(--header-font);
+	font-family: var(--headerFont);
 	font-size: 2.5rem;
 }
 #nav-collapse {
@@ -68,7 +68,7 @@ export default {
 	text-align: center;
 }
 .nav-link:hover {
-	color: var(--main-color) !important;
+	color: var(--mainColor) !important;
 }
 .nav-wrapper a,
 a:hover,

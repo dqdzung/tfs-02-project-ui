@@ -6,6 +6,7 @@ import About from "../pages/About.vue";
 import Brands from "../pages/Brands.vue";
 import Dogs from "../pages/Dogs.vue";
 import Cats from "../pages/Cats.vue";
+import SignUp from "../pages/SignUp.vue";
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,11 @@ const routes = [
 		name: "Cats",
 		component: Cats,
 	},
+	{
+		path: "/signup",
+		name: "SignUp",
+		component: SignUp,
+	},
 	{ path: "*", redirect: "/" },
 ];
 
@@ -51,7 +57,7 @@ const router = new VueRouter({
 
 // router.beforeEach((to, from, next) => {
 // 	// redirect to login page if not logged in
-// 	const publicPages = ["/login", "/register"];
+// 	const publicPages = ["/","/login","/signup" ];
 // 	const authRequired = !publicPages.includes(to.path);
 // 	const loggedIn = localStorage.getItem("token");
 

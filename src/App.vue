@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<TopBar :loginStatus="isLoggedIn" />
+		<TopBar :loginStatus="isLoggedIn" @logout="handleLogout" />
 		<Navbar />
 		<router-view />
 		<Footer />
-		<LoginModal />
+		<LoginModal @login="handleLogin" />
 	</div>
 </template>
 
@@ -24,15 +24,26 @@ export default {
 		Footer,
 		LoginModal,
 	},
-	computed: {
-		isLoggedIn() {
+	mounted() {
+		this.$nextTick(function() {
 			const token = localStorage.getItem("token");
-			return token ? true : false;
-		},
+			if (token) {
+				this.isLoggedIn = true;
+			}
+		});
 	},
 	data() {
-		return {};
+		return {
+			isLoggedIn: false,
+		};
 	},
-	methods: {},
+	methods: {
+		handleLogin() {
+			this.isLoggedIn = true;
+		},
+		handleLogout() {
+			this.isLoggedIn = false;
+		},
+	},
 };
 </script>

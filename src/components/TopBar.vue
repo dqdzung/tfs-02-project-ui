@@ -16,6 +16,7 @@
 					Cart
 					<b-icon icon="cart-fill" variant="light" />
 				</div>
+
 				<div
 					v-if="!loginStatus"
 					@click="showLoginModal"
@@ -42,7 +43,10 @@ export default {
 			this.$bvModal.show("login-modal");
 		},
 		handleLogout() {
-			localStorage.removeItem("token");
+			if (confirm("Are you sure?")) {
+				localStorage.removeItem("token");
+				this.$emit("logout");
+			}
 		},
 	},
 };
@@ -51,7 +55,7 @@ export default {
 <style>
 .topbar {
 	height: 50px;
-	background-color: var(--main-color);
+	background-color: var(--mainColor);
 	color: white;
 }
 .topbar-login {
@@ -60,8 +64,8 @@ export default {
 	cursor: pointer;
 }
 .modal-login-button {
-	background-color: var(--main-color);
-	border: var(--main-color);
+	background-color: var(--mainColor);
+	border: var(--mainColor);
 }
 .cart-wrapper {
 	padding-right: 15px;
@@ -79,7 +83,7 @@ export default {
 .b-icon[aria-label="search"] {
 	position: relative;
 	right: 25px;
-	color: var(--main-color);
+	color: var(--mainColor);
 }
 @media (max-width: 575px) {
 	.topbar-inner,
