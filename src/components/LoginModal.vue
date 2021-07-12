@@ -8,27 +8,26 @@
 		</template>
 
 		<template>
-			<b-form @submit.prevent="onSubmit">
+			<b-form @submit.prevent="handleLogin">
 				<b-form-input
-					id="input-1"
 					type="email"
 					placeholder="Enter email"
 					v-model="email"
-					required
+					:state="error.emailValid"
 					class="mb-3"
+					required
 				></b-form-input>
 
 				<b-form-input
-					id="input-2"
 					type="password"
 					placeholder="Enter password"
 					v-model="password"
 					@input="clearError"
-					:state="error.state"
+					:state="error.passwordValid"
 					class="mb-3"
 					required
 				></b-form-input>
-				<div class="error-text mb-3">{{ error.message }}</div>
+				<ErrorMessage :message="error.message" />
 				<b-button type="submit" class="modal-login-button" size="lg">
 					Login
 				</b-button>
@@ -36,28 +35,42 @@
 		</template>
 
 		<template #modal-footer>
-			<a href="/signup">Don't have an account? Sign Up!</a>
+			<span @click="hideModal">
+				<router-link to="/signup">Don't have an account? Sign Up!</router-link>
+			</span>
 		</template>
 	</b-modal>
 </template>
 
 <script>
 import axios from "axios";
+import ErrorMessage from "./ErrorMessage.vue";
 
 export default {
+	name: "LoginModal",
+	components: {
+		ErrorMessage,
+	},
+	mounted() {
+		this.$root.$on("bv::modal::hide", () => {
+			this.clearInput();
+			this.clearError();
+		});
+	},
 	data() {
 		return {
 			email: "",
 			password: "",
 			error: {
-				state: null,
+				emailValid: null,
+				passwordValid: null,
 				message: "",
 			},
 		};
 	},
+
 	methods: {
-		async onSubmit() {
-			// console.log("clicked");
+		async handleLogin() {
 			try {
 				const res = await axios({
 					method: "POST",
@@ -70,38 +83,40 @@ export default {
 						"Access-Control-Allow-Origin": "*",
 					},
 				});
+
 				if (res.data.success) {
-					this.hideModal();
-					this.clearInput();
+					console.log("logged in");
 					localStorage.setItem("token", res.data.data.token);
+					this.hideModal();
+					this.$emit("login");
 				}
 			} catch (err) {
-				this.error.state = false;
-				this.error.message = "Wrong email or password!";
-				this.password = "";
+				console.log(err);
+				this.displayError();
 			}
 		},
+
 		hideModal() {
-			console.log("clicked");
-			this.clearInput();
 			this.$bvModal.hide("login-modal");
 		},
+
 		clearError() {
-			this.error.state = null;
+			this.error.emailValid = null;
+			this.error.passwordValid = null;
 			this.error.message = "";
 		},
+
 		clearInput() {
 			this.email = "";
 			this.password = "";
-			this.error.message = "";
-			this.error.state = null;
+		},
+
+		displayError() {
+			this.password = "";
+			this.error.emailValid = false;
+			this.error.passwordValid = false;
+			this.error.message = "Wrong Email or Password!";
 		},
 	},
 };
 </script>
-
-<style>
-.error-text {
-	color: red;
-}
-</style>
