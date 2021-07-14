@@ -174,7 +174,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .sign-up-form {
 	width: 80%;
 }
@@ -182,6 +182,10 @@ export default {
 	background-color: var(--mainColor);
 	margin: 20px 0;
 	border: none;
+	transition: all 0.3s;
+}
+.sign-up-btn:hover {
+	background-color: var(--mainColorDarken);
 }
 .form-group {
 	margin-top: 20px;

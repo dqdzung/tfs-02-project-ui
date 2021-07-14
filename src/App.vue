@@ -2,7 +2,9 @@
 	<div>
 		<TopBar :loginStatus="isLoggedIn" @logout="handleLogout" />
 		<Navbar />
+
 		<router-view />
+
 		<Footer />
 		<LoginModal @login="handleLogin" />
 	</div>

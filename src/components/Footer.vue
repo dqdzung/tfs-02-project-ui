@@ -1,12 +1,12 @@
 <template>
-	<footer class="bg-brown">
+	<footer class="bg-brown mt-3">
 		<b-container>
 			<section class="text-center mx-auto w-75 p-4">
 				<div class="footer-brand">Pet Pal</div>
 				<p>
-					Pet Pal là hệ thống pet shop cung cấp thức ăn cho chó mèo uy tín hàng
-					đầu tại Hà Nội. Với tôn chỉ phục vụ và chăm sóc khách hàng và thú cưng
-					như người thân trong gia đình
+					Pet Pal is the go-to destination for all your pet food needs in Hanoi.
+					We strive to maximize our customers' satisfaction by treating their
+					pets like one of our own.
 				</p>
 			</section>
 			<section class="p-4">
@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bg-brown {
 	background-color: #54473e;
 	color: white;

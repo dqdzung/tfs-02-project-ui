@@ -1,5 +1,5 @@
 <template>
-	<div class="nav-wrapper shadow mb-3 bg-white sticky-top">
+	<div class="nav-wrapper shadow bg-white sticky-top">
 		<b-container>
 			<b-navbar toggleable="sm" type="light">
 				<b-navbar-brand
@@ -37,7 +37,9 @@
 						>
 					</b-navbar-nav>
 					<b-navbar-nav class="d-block d-sm-none">
-						<b-nav-item>Login</b-nav-item>
+						<b-nav-item
+							><router-link to="/login">Login</router-link></b-nav-item
+						>
 					</b-navbar-nav>
 				</b-collapse>
 			</b-navbar>
@@ -51,7 +53,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .navbar-brand {
 	font-family: var(--headerFont);
 	font-size: 2.5rem;

@@ -18,14 +18,10 @@
 				</div>
 
 				<div
-					v-if="!loginStatus"
-					@click="showLoginModal"
+					@click="loginStatus ? handleLogout() : showLoginModal()"
 					class="topbar-login d-none d-sm-flex"
 				>
-					Login
-				</div>
-				<div v-else class="topbar-login d-none d-sm-flex" @click="handleLogout">
-					Logout
+					{{ loginStatus ? "Logout" : "Login" }}
 				</div>
 			</div>
 		</b-container>
@@ -52,7 +48,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .topbar {
 	height: 50px;
 	background-color: var(--mainColor);
@@ -96,5 +92,12 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
 }
 </style>
