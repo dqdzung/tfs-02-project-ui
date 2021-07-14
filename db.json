@@ -1,0 +1,64 @@
+{
+	"products": [
+		{
+			"id": 1,
+			"name": "Food 1",
+			"price": 15,
+			"original_price": 11,
+			"quantity": 124,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		},
+		{
+			"id": 2,
+			"name": "Food 2",
+			"price": 100,
+			"original_price": 11,
+			"quantity": 200,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		},
+		{
+			"id": 3,
+			"name": "Food 3",
+			"price": 101,
+			"original_price": 11,
+			"quantity": 200,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		},
+		{
+			"id": 4,
+			"name": "Food 4",
+			"price": 21,
+			"original_price": 11,
+			"quantity": 200,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		},
+		{
+			"id": 5,
+			"name": "Food 5",
+			"price": 10,
+			"original_price": 11,
+			"quantity": 200,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		},
+		{
+			"id": 7,
+			"name": "Food 7",
+			"price": 10,
+			"original_price": 11,
+			"quantity": 200,
+			"image_url": "https://petfoods.asia/wp-content/uploads/2020/08/pedigree-cho-cho-lon-vi-bo-va-rau-cu-400g-1-300x300.jpg",
+			"active": 2,
+			"created_at": "0001-01-01T00:00:00Z"
+		}
+	]
+}

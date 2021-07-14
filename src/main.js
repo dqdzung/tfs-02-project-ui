@@ -6,11 +6,13 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import App from "./App.vue";
 import router from "./router";
+import store from './store'
 
 Vue.use(IconsPlugin);
 Vue.use(BootstrapVue);
 
 new Vue({
-	router,
-	render: (h) => h(App),
+    router,
+    store,
+    render: (h) => h(App)
 }).$mount("#app");

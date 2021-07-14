@@ -26,6 +26,9 @@ export default {
 		Footer,
 		LoginModal,
 	},
+	created() {
+		this.$store.dispatch("getAllProducts");
+	},
 	mounted() {
 		this.$nextTick(function() {
 			const token = localStorage.getItem("token");

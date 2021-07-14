@@ -1,13 +1,10 @@
 <template>
 	<div class="product-card shadow p-2 bg-white rounded">
 		<div class="image-wrapper d-flex justify-content-center">
-			<img
-				src="https://petmaster.vn/wp-content/uploads/2020/05/46.jpg"
-				alt=""
-			/>
+			<img :src="imgUrl" alt="product-image" />
 		</div>
-		<h3 class="text-center">Cat food</h3>
-		<div class="text-center">$999</div>
+		<h3 class="text-center">{{ title }}</h3>
+		<div class="text-center">${{ price }}</div>
 		<b-button class="button">Button</b-button>
 	</div>
 </template>
@@ -15,6 +12,11 @@
 <script>
 export default {
 	name: "Product",
+	props: {
+		imgUrl: String,
+		title: String,
+		price: Number,
+	},
 };
 </script>
 
