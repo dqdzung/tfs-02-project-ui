@@ -3,7 +3,9 @@
 		<HeroBanner />
 		<b-container>
 			<div class="py-3">
-				<div class="d-flex align-items-center justify-content-between px-5">
+				<div
+					class="d-flex align-items-center justify-content-between px-5 py-3"
+				>
 					<h2>Dogs</h2>
 					<router-link to="/dogs"> See all »</router-link>
 				</div>
@@ -16,7 +18,9 @@
 				</div>
 			</div>
 			<div class="py-3">
-				<div class="d-flex align-items-center justify-content-between px-5">
+				<div
+					class="d-flex align-items-center justify-content-between px-5 py-3"
+				>
 					<h2>Cats</h2>
 					<router-link to="/cats"> See all »</router-link>
 				</div>

@@ -20,34 +20,36 @@
 export default {};
 </script>
 
-<style scoped>
-* {
-	margin: 0;
-}
+<style lang="scss" scoped>
 .banner-wrapper {
+	* {
+		margin: 0;
+	}
+
 	background: linear-gradient(
 			to bottom,
 			rgba(0, 0, 0, 0) 50%,
 			rgba(0, 0, 0, 0.65) 100%
 		),
 		url(../assets/images/banner.jpg);
-
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
 	height: 50vh;
 	animation: animateBanner 1s;
-}
-@keyframes animateBanner {
-	from {
-		opacity: 0;
+
+	@keyframes animateBanner {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
-	to {
-		opacity: 1;
+
+	.text-box {
+		height: 100%;
+		color: white;
 	}
-}
-.text-box {
-	height: 100%;
-	color: white;
 }
 </style>

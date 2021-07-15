@@ -53,30 +53,35 @@ export default {
 };
 </script>
 
-<style scoped>
-.navbar-brand {
-	font-family: var(--headerFont);
-	font-size: 2.5rem;
-}
-#nav-collapse {
-	justify-content: space-evenly;
-	font-weight: bold;
-}
-#nav-collapse .search {
-	width: 70%;
-	margin: 0 auto;
-}
-.nav-link {
-	text-align: center;
-}
-.nav-link:hover {
-	color: var(--mainColor) !important;
-}
-.nav-wrapper a,
-a:hover,
-a:focus,
-a:active {
-	text-decoration: none;
-	color: inherit;
+<style lang="scss" scoped>
+.nav-wrapper {
+	a,
+	a:hover,
+	a:focus,
+	a:active {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.navbar-brand {
+		font-family: var(--headerFont);
+		font-size: 2.5rem;
+	}
+
+	#nav-collapse {
+		justify-content: space-evenly;
+		font-weight: bold;
+		.search {
+			width: 70%;
+			margin: 0 auto;
+		}
+	}
+
+	.nav-link {
+		text-align: center;
+		&:hover {
+			color: var(--mainColor);
+		}
+	}
 }
 </style>

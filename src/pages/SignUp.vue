@@ -174,20 +174,22 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .sign-up-form {
 	width: 80%;
-}
-.sign-up-btn {
-	background-color: var(--mainColor);
-	margin: 20px 0;
-	border: none;
-	transition: all 0.3s;
-}
-.sign-up-btn:hover {
-	background-color: var(--mainColorDarken);
-}
-.form-group {
-	margin-top: 20px;
+
+	.sign-up-btn {
+		background-color: var(--mainColor);
+		margin: 20px 0;
+		border: none;
+		transition: all 0.3s;
+
+		&:hover {
+			background-color: var(--mainColorDarken);
+		}
+	}
+	.form-group {
+		margin-top: 20px;
+	}
 }
 </style>
