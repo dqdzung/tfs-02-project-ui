@@ -5,16 +5,14 @@ export default {
 		data: [],
 	},
 	mutations: {
-		saveAllProducts(state, data) {
-			state.data = data;
-		},
+		setProducts: (state, data) => (state.data = data),
 	},
 	actions: {
-		async getAllProducts({ commit }) {
+		getAllProducts: async ({ commit }) => {
 			const { data } = await axios({
 				url: "http://localhost:3000/products",
 			});
-			commit("saveAllProducts", data);
+			commit("setProducts", data);
 		},
 	},
 };

@@ -11,9 +11,7 @@
 					<Product
 						v-for="product in products"
 						:key="product.id"
-						:imgUrl="product.image_url"
-						:title="product.name"
-						:price="product.price"
+						:product="product"
 					/>
 				</div>
 			</div>

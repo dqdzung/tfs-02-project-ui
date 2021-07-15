@@ -29,19 +29,22 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
 	name: "TopBar",
-	props: {
-		loginStatus: Boolean,
-	},
+	computed: mapState({
+		loginStatus: (state) => state.login.status,
+	}),
 	methods: {
+		...mapActions(["setLogin"]),
 		showLoginModal() {
 			this.$bvModal.show("login-modal");
 		},
 		handleLogout() {
 			if (confirm("Are you sure?")) {
 				localStorage.removeItem("token");
-				this.$emit("logout");
+				this.setLogin(false);
 			}
 		},
 	},
