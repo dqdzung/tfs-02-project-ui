@@ -1,6 +1,6 @@
 <template>
 	<b-container>
-		<div class="main py-5">
+		<div class="main py-4">
 			<div class="image-wrapper">
 				<img :src="product.image_url" alt="product-image" />
 			</div>
@@ -10,16 +10,37 @@
 					Brand: <strong>{{ product.brand_name }}</strong>
 				</div>
 				<div class="d-flex align-items-center justify-content-between">
-					<div class="price">$US {{ product.price }}</div>
+					<div class="d-flex align-items-center">
+						<s v-if="product.original_price">${{ product.original_price }}</s>
+						<div class="price">${{ product.price }}</div>
+					</div>
+
 					<div class="quantity">In Stock: {{ product.quantity }}</div>
 				</div>
-				<div class="options">Options:</div>
+
+				<!-- Radio buttons -->
+				<b-form-group
+					class="py-2"
+					v-for="(option, index) in radioOptions"
+					:key="index"
+					:label="capitalize(index)"
+				>
+					<b-form-radio-group
+						class="btn-radios"
+						v-model="selected[index]"
+						:options="option"
+						name="radios-btn"
+						button-variant="outline-warning"
+						buttons
+					></b-form-radio-group>
+				</b-form-group>
+				<!-- End Radio buttons -->
 				<hr />
 				<b-form>
 					<div class="quantity-form py-3 d-flex">
-						<input type="button" value="+" @click="plus()" />
-						<input type="number" @input="handleInput" :value="this.quantity" />
 						<input type="button" value="-" @click="minus()" />
+						<input type="number" @input="handleInput" :value="this.quantity" />
+						<input type="button" value="+" @click="plus()" />
 					</div>
 					<b-button class="add-cart-btn my-3 py-3 shadow rounded" size="lg"
 						>ADD TO CART
@@ -28,7 +49,7 @@
 			</div>
 		</div>
 		<h3>Description</h3>
-		<div>
+		<div class="text-justify">
 			{{ product.description }}
 		</div>
 	</b-container>
@@ -45,13 +66,28 @@ export default {
 			url: `http://localhost:8081/api/products/${alias}`,
 		});
 
-		console.log("food", data.data);
+		// console.log("item", data.data);
 		this.product = data.data;
+		for (let option of data.data.options) {
+			this.radioOptions[option.name] = [];
+			this.selected[option.name] = "";
+			option.option_values.forEach((elem) => {
+				this.radioOptions[option.name].push({
+					text: `${elem.name}`,
+					value: `${elem.name}`,
+				});
+			});
+		}
+		this.options = data.data.options;
+		console.log(this.product);
+		// console.log(this.selected);
 	},
 	data() {
 		return {
 			product: {},
 			quantity: 1,
+			selected: {},
+			radioOptions: {},
 		};
 	},
 	methods: {
@@ -70,11 +106,14 @@ export default {
 		handleInput(e) {
 			this.quantity = e.target.value;
 		},
+		capitalize(str) {
+			return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+		},
 	},
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -85,18 +124,19 @@ export default {
 
 	.image-wrapper {
 		display: flex;
-		justify-content: center;
 		min-width: 50%;
 		height: 500px;
 		img {
-			width: 100%;
-			object-fit: contain;
+			display: block;
+			margin: auto;
+			max-height: 100%;
+			max-width: 100%;
+			padding: 20px;
 		}
 	}
 
 	.brand,
-	.quantity,
-	.options {
+	.quantity {
 		font-size: 1.2rem;
 		padding-bottom: 10px;
 	}
@@ -112,6 +152,16 @@ export default {
 		border: none;
 		&:hover {
 			background-color: var(--mainColorDarken);
+		}
+	}
+
+	.btn-radios {
+		label {
+			margin: 0 5px;
+			border-radius: 0;
+		}
+		input {
+			display: none;
 		}
 	}
 

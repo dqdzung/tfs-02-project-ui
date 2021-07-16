@@ -43,11 +43,15 @@ export default {
 	}
 
 	.image-wrapper {
-		height: 250px;
-		img {
-			height: 100%;
-			max-width: 100%;
-		}
+		display: flex;
+		height: 200px;
+		width: 100%;
+	}
+	img {
+		display: block;
+		margin: auto;
+		max-height: 100%;
+		max-width: 100%;
 	}
 
 	.button {
