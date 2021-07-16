@@ -63,18 +63,10 @@ const router = new VueRouter({
 	routes,
 });
 
-// router.beforeEach((to, from, next) => {
-// 	// check if token expires
-// 	const token = localStorage.getItem("token");
-// 	if (token) {
-// 		const payload = jwt.decode(token);
-// 		if (Date.now() >= payload.exp * 1000) {
-// 			console.log("expired");
-// 			localStorage.removeItem("token");
-// 		}
-// 	}
-
-// 	next();
-// });
+router.beforeEach((to, from, next) => {
+	// Scroll to top on route change
+	window.scrollTo(0, 0);
+	next();
+});
 
 export default router;
