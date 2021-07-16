@@ -44,6 +44,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 import ErrorMessage from "./ErrorMessage.vue";
 
 export default {
@@ -70,6 +71,7 @@ export default {
 	},
 
 	methods: {
+		...mapActions(["setLogin"]),
 		async handleLogin() {
 			try {
 				const res = await axios({
@@ -88,7 +90,7 @@ export default {
 					console.log("logged in");
 					localStorage.setItem("token", res.data.data.token);
 					this.hideModal();
-					this.$emit("login");
+					this.setLogin(true);
 				}
 			} catch (err) {
 				console.log(err);
@@ -120,3 +122,15 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.modal-login-button {
+	background-color: var(--mainColor);
+	border: 0;
+	transition: all 0.3s;
+
+	&:hover {
+		background-color: var(--mainColorDarken);
+	}
+}
+</style>

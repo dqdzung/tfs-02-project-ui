@@ -1,10 +1,12 @@
 <template>
 	<div>
-		<TopBar :loginStatus="isLoggedIn" @logout="handleLogout" />
+		<TopBar />
 		<Navbar />
+
 		<router-view />
+
 		<Footer />
-		<LoginModal @login="handleLogin" />
+		<LoginModal />
 	</div>
 </template>
 
@@ -13,6 +15,8 @@ import TopBar from "./components/TopBar.vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import LoginModal from "./components/LoginModal.vue";
+
+import { mapActions } from "vuex";
 
 import "./assets/main.css";
 
@@ -24,26 +28,17 @@ export default {
 		Footer,
 		LoginModal,
 	},
-	mounted() {
-		this.$nextTick(function() {
-			const token = localStorage.getItem("token");
-			if (token) {
-				this.isLoggedIn = true;
-			}
-		});
+	created() {
+		this.getHomeProducts();
 	},
-	data() {
-		return {
-			isLoggedIn: false,
-		};
-	},
+	// updated() {
+	// 	const token = localStorage.getItem("token");
+	// 	if (!token) {
+	// 		this.setLogin(false);
+	// 	}
+	// },
 	methods: {
-		handleLogin() {
-			this.isLoggedIn = true;
-		},
-		handleLogout() {
-			this.isLoggedIn = false;
-		},
+		...mapActions(["getHomeProducts", "setLogin"]),
 	},
 };
 </script>

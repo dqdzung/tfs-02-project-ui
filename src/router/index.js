@@ -1,12 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../pages/Home.vue";
-import Login from "../pages/Login.vue";
-import About from "../pages/About.vue";
-import Brands from "../pages/Brands.vue";
-import Dogs from "../pages/Dogs.vue";
-import Cats from "../pages/Cats.vue";
-import SignUp from "../pages/SignUp.vue";
+// import jwt from "jsonwebtoken";
+
+const Home = () => import("../pages/Home.vue");
+const Login = () => import("../pages/Login.vue");
+const About = () => import("../pages/About.vue");
+const Brands = () => import("../pages/Brands.vue");
+const Dogs = () => import("../pages/Dogs.vue");
+const Cats = () => import("../pages/Cats.vue");
+const SignUp = () => import("../pages/SignUp.vue");
+const ProductDetail = () => import("../pages/ProductDetail.vue");
 
 Vue.use(VueRouter);
 
@@ -46,6 +49,11 @@ const routes = [
 		name: "SignUp",
 		component: SignUp,
 	},
+	{
+		path: "/product/*",
+		name: "ProductDetail",
+		component: ProductDetail,
+	},
 	{ path: "*", redirect: "/" },
 ];
 
@@ -56,13 +64,14 @@ const router = new VueRouter({
 });
 
 // router.beforeEach((to, from, next) => {
-// 	// redirect to login page if not logged in
-// 	const publicPages = ["/","/login","/signup" ];
-// 	const authRequired = !publicPages.includes(to.path);
-// 	const loggedIn = localStorage.getItem("token");
-
-// 	if (authRequired && !loggedIn) {
-// 		return next("/login");
+// 	// check if token expires
+// 	const token = localStorage.getItem("token");
+// 	if (token) {
+// 		const payload = jwt.decode(token);
+// 		if (Date.now() >= payload.exp * 1000) {
+// 			console.log("expired");
+// 			localStorage.removeItem("token");
+// 		}
 // 	}
 
 // 	next();
