@@ -92,13 +92,24 @@ export default {
 	},
 	methods: {
 		plus() {
-			if (this.quantity >= this.product.quantity) {
+			if (this.quantity < 1) {
+				this.quantity = 1;
 				return;
 			}
+			if (this.quantity >= this.product.quantity) {
+				this.quantity = this.product.quantity;
+				return;
+			}
+
 			this.quantity++;
 		},
 		minus() {
 			if (this.quantity <= 1) {
+				this.quantity = 1;
+				return;
+			}
+			if (this.quantity > this.product.quantity) {
+				this.quantity = this.product.quantity;
 				return;
 			}
 			this.quantity--;
