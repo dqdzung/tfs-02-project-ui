@@ -2,17 +2,28 @@ import axios from "axios";
 
 export default {
 	state: {
-		data: [],
+		cats: [],
+		dogs: [],
 	},
 	mutations: {
-		setProducts: (state, data) => (state.data = data),
+		setCats: (state, data) => (state.cats = data),
+		setDogs: (state, data) => (state.dogs = data),
 	},
 	actions: {
-		getAllProducts: async ({ commit }) => {
-			const { data } = await axios({
-				url: "http://localhost:3000/products",
+		getHomeProducts: async ({ commit }) => {
+			const res1 = await axios({
+				url:
+					"http://localhost:8081/api/products?category=cat&sort=date&order=desc&limit=6",
 			});
-			commit("setProducts", data);
+			commit("setCats", res1.data.data.products);
+			console.log(res1.data.data);
+
+			const res2 = await axios({
+				url:
+					"http://localhost:8081/api/products?category=dog&sort=date&order=desc&limit=6",
+			});
+			commit("setDogs", res2.data.data.products);
+			console.log(res2.data.data);
 		},
 	},
 };

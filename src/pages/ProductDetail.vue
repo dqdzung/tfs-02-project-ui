@@ -31,12 +31,12 @@ export default {
 	async created() {
 		const alias = this.$route.params.pathMatch;
 
-		const res = await axios({
-			url: `http://localhost:3000/product-detail/?alias=${alias}`,
+		const { data } = await axios({
+			url: `http://localhost:8081/api/products/${alias}`,
 		});
 
-		console.log("food", res.data[0]);
-		this.product = res.data[0];
+		console.log("food", data.data);
+		this.product = data.data;
 	},
 	data() {
 		return {

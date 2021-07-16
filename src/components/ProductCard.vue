@@ -1,12 +1,12 @@
 <template>
 	<div class="product-card shadow p-2 bg-white rounded">
-		<div class="image-wrapper d-flex justify-content-center">
+		<div class="image-wrapper">
 			<img :src="product.image_url" alt="product-image" @click="handleClick" />
 		</div>
 		<div class="text-center">{{ product.name }}</div>
 		<div class="info-wrapper">
 			<h4 class="text-center">${{ product.price }}</h4>
-			<b-button class="button">Button</b-button>
+			<b-button class="button">View</b-button>
 		</div>
 	</div>
 </template>
@@ -50,10 +50,14 @@ export default {
 	transform: scale(1.03);
 }
 .image-wrapper {
-	height: 250px;
+	display: flex;
+	height: 200px;
+	width: 100%;
 }
 img {
-	height: 100%;
+	display: block;
+	margin: auto;
+	max-height: 100%;
 	max-width: 100%;
 }
 .button {

@@ -29,7 +29,7 @@ export default {
 		LoginModal,
 	},
 	created() {
-		this.getAllProducts();
+		this.getHomeProducts();
 	},
 	// updated() {
 	// 	const token = localStorage.getItem("token");
@@ -38,7 +38,7 @@ export default {
 	// 	}
 	// },
 	methods: {
-		...mapActions(["getAllProducts", "setLogin"]),
+		...mapActions(["getHomeProducts", "setLogin"]),
 	},
 };
 </script>
