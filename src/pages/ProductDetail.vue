@@ -4,16 +4,27 @@
 			<div class="image-wrapper">
 				<img :src="product.image_url" alt="product-image" />
 			</div>
-			<div class="info-wrapper p-3 ">
+			<div class="p-3 ">
 				<h3>{{ product.name }}</h3>
 				<div class="brand">
 					Brand: <strong>{{ product.brand_name }}</strong>
 				</div>
-				<div class="price">$US {{ product.price }}</div>
-				<div class="quantity">Quantity: {{ product.quantity }}</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<div class="price">$US {{ product.price }}</div>
+					<div class="quantity">In Stock: {{ product.quantity }}</div>
+				</div>
 				<div class="options">Options:</div>
-				<input type="number" />
-				<b-button class="btn" size="lg">Add to Cart</b-button>
+				<hr />
+				<b-form>
+					<div class="quantity-form py-3 d-flex">
+						<input type="button" value="+" @click="plus()" />
+						<input type="number" @input="handleInput" :value="this.quantity" />
+						<input type="button" value="-" @click="minus()" />
+					</div>
+					<b-button class="add-cart-btn my-3 py-3 shadow rounded" size="lg"
+						>ADD TO CART
+					</b-button>
+				</b-form>
 			</div>
 		</div>
 		<h3>Description</h3>
@@ -24,7 +35,6 @@
 </template>
 
 <script>
-// import { mapActions, mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -41,48 +51,93 @@ export default {
 	data() {
 		return {
 			product: {},
+			quantity: 1,
 		};
+	},
+	methods: {
+		plus() {
+			if (this.quantity >= this.product.quantity) {
+				return;
+			}
+			this.quantity++;
+		},
+		minus() {
+			if (this.quantity <= 1) {
+				return;
+			}
+			this.quantity--;
+		},
+		handleInput(e) {
+			this.quantity = e.target.value;
+		},
 	},
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-}
-.brand,
-.quantity,
-.options {
-	font-size: 1.2rem;
-	padding-bottom: 10px;
-}
-.price {
-	font-size: 2rem;
-	font-weight: bold;
-	padding-bottom: 10px;
-}
-.image-wrapper {
-	display: flex;
-	justify-content: center;
-	min-width: 50%;
-	height: 500px;
-}
-img {
-	width: 100%;
-	object-fit: contain;
-}
-.btn {
-	background-color: var(--mainColor);
-	border: none;
-}
-.btn:hover {
-	background-color: var(--mainColorDarken);
-}
-@media (max-width: 768px) {
-	.main {
+	@media (max-width: 768px) {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.image-wrapper {
+		display: flex;
+		justify-content: center;
+		min-width: 50%;
+		height: 500px;
+		img {
+			width: 100%;
+			object-fit: contain;
+		}
+	}
+
+	.brand,
+	.quantity,
+	.options {
+		font-size: 1.2rem;
+		padding-bottom: 10px;
+	}
+
+	.price {
+		font-size: 2rem;
+		font-weight: bold;
+		padding-bottom: 10px;
+	}
+
+	.add-cart-btn {
+		background-color: var(--mainColor);
+		border: none;
+		&:hover {
+			background-color: var(--mainColorDarken);
+		}
+	}
+
+	.quantity-form {
+		input {
+			width: 50px;
+			text-align: center;
+		}
+
+		input[type="button"] {
+			width: 30px;
+			border: none;
+			transition: all 0.5s;
+			&:hover {
+				background-color: var(--mainColor);
+			}
+		}
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input[type="number"] {
+			-moz-appearance: textfield;
+		}
 	}
 }
 </style>

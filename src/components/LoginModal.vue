@@ -123,13 +123,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-login-button {
 	background-color: var(--mainColor);
 	border: 0;
 	transition: all 0.3s;
-}
-.modal-login-button:hover {
-	background-color: var(--mainColorDarken);
+
+	&:hover {
+		background-color: var(--mainColorDarken);
+	}
 }
 </style>

@@ -54,18 +54,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bg-brown {
 	background-color: #54473e;
 	color: white;
-}
-.footer-brand {
-	font-size: 2.5rem;
-	font-family: var(--headerFont);
-}
-@media (max-width: 768px) {
+
+	.footer-brand {
+		font-size: 2.5rem;
+		font-family: var(--headerFont);
+	}
+
 	.list-group {
-		text-align: center;
+		@media (max-width: 768px) {
+			text-align: center;
+		}
 	}
 }
 </style>
