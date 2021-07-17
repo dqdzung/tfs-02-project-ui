@@ -12,7 +12,7 @@
 				<b-icon icon="search" />
 			</div>
 			<div class="login-cart-wrapper d-flex justify-content-between ">
-				<div class="cart-wrapper">
+				<div @click="handleClickCart" class="cart-wrapper">
 					Cart
 					<b-icon icon="cart-fill" variant="light" />
 				</div>
@@ -47,6 +47,9 @@ export default {
 				this.setLogin(false);
 			}
 		},
+		handleClickCart() {
+			console.log("cart clicked, not implement yet");
+		},
 	},
 };
 </script>
@@ -57,6 +60,9 @@ export default {
 	background-color: var(--mainColor);
 	color: white;
 
+	// Disable text highlight
+	user-select: none;
+
 	.topbar-login {
 		padding-left: 15px;
 		border-left: 1px white solid;
@@ -64,6 +70,7 @@ export default {
 	}
 
 	.cart-wrapper {
+		cursor: pointer;
 		padding-right: 15px;
 	}
 

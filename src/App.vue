@@ -30,6 +30,10 @@ export default {
 	},
 	created() {
 		this.getHomeProducts();
+		const token = localStorage.getItem("token");
+		if (token) {
+			this.setLogin(true);
+		}
 	},
 	// updated() {
 	// 	const token = localStorage.getItem("token");
