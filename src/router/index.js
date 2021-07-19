@@ -10,6 +10,7 @@ const Dogs = () => import("../pages/Dogs.vue");
 const Cats = () => import("../pages/Cats.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
+const Cart = () => import("../pages/Carts.vue")
 
 Vue.use(VueRouter);
 
@@ -55,6 +56,11 @@ const routes = [
 		component: ProductDetail,
 	},
 	{ path: "*", redirect: "/" },
+	{
+		path: "/cart",
+		name: "Cart",
+		component: Cart,
+	},
 ];
 
 const router = new VueRouter({
