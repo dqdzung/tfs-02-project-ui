@@ -3,9 +3,9 @@ export default {
 		status: false,
 	},
 	mutations: {
-		setStatus: (state, status) => (state.status = status),
+		SET_STATUS: (state, status) => (state.status = status),
 	},
 	actions: {
-		setLogin: ({ commit }, status) => commit("setStatus", status),
+		SET_LOGIN: ({ commit }, status) => commit("SET_STATUS", status),
 	},
 };

@@ -12,10 +12,13 @@
 				<div class="d-flex align-items-center justify-content-between">
 					<div class="d-flex align-items-center">
 						<s v-if="product.original_price">${{ product.original_price }}</s>
-						<div class="price">${{ product.price }}</div>
+						<div class="price">${{ getPrice }}</div>
 					</div>
 
-					<div class="quantity">In Stock: {{ product.quantity }}</div>
+					<div class="quantity">
+						In Stock:
+						{{ getStock }}
+					</div>
 				</div>
 
 				<!-- Radio buttons -->
@@ -32,6 +35,7 @@
 						name="radios-btn"
 						button-variant="outline-warning"
 						buttons
+						@change="handleOptionChange(index)"
 					></b-form-radio-group>
 				</b-form-group>
 				<!-- End Radio buttons -->
@@ -39,10 +43,17 @@
 				<b-form>
 					<div class="quantity-form py-3 d-flex">
 						<input type="button" value="-" @click="minus()" />
-						<input type="number" @input="handleInput" :value="this.quantity" />
+						<input
+							type="number"
+							@input="handleQuantityInput"
+							:value="this.quantity"
+						/>
 						<input type="button" value="+" @click="plus()" />
 					</div>
-					<b-button class="add-cart-btn my-3 py-3 shadow rounded" size="lg"
+					<b-button
+						@click="handleAddCart"
+						class="add-cart-btn my-3 py-3 shadow rounded"
+						size="lg"
 						>ADD TO CART
 					</b-button>
 				</b-form>
@@ -57,6 +68,7 @@
 
 <script>
 import axios from "axios";
+import { mapState, mapActions } from "vuex";
 
 export default {
 	async created() {
@@ -66,38 +78,59 @@ export default {
 			url: `http://localhost:8081/api/products/${alias}`,
 		});
 
-		// console.log("item", data.data);
 		this.product = data.data;
+		// Get the options to render
 		for (let option of data.data.options) {
 			this.radioOptions[option.name] = [];
+			// Initiate a selected state to hold the radio buttons' values
 			this.selected[option.name] = "";
 			option.option_values.forEach((elem) => {
 				this.radioOptions[option.name].push({
-					text: `${elem.name}`,
-					value: `${elem.name}`,
+					text: `${elem.name}`, // Text inside the radio buttons
+					value: `${elem.name}`, // Value of radio buttons
 				});
 			});
 		}
-		this.options = data.data.options;
-		console.log(this.product);
-		// console.log(this.selected);
+		this.price = data.data.price;
+		// console.log(this.product);
 	},
+
+	computed: {
+		...mapState({
+			cart: (state) => state.cart.items,
+		}),
+		getPrice() {
+			return this.chosenVariant.price
+				? this.chosenVariant.price
+				: this.product.price;
+		},
+		getStock() {
+			return this.chosenVariant.quantity
+				? this.chosenVariant.quantity
+				: this.product.quantity;
+		},
+	},
+
 	data() {
 		return {
 			product: {},
+			price: 0,
 			quantity: 1,
 			selected: {},
 			radioOptions: {},
+			chosenVariant: {},
 		};
 	},
+
 	methods: {
+		...mapActions(["SET_CART", "ADD_TO_CART", "ADD_QUANTITY"]),
 		plus() {
 			if (this.quantity < 1) {
 				this.quantity = 1;
 				return;
 			}
-			if (this.quantity >= this.product.quantity) {
-				this.quantity = this.product.quantity;
+			if (this.quantity >= this.getStock) {
+				this.quantity = this.getStock;
 				return;
 			}
 
@@ -108,17 +141,82 @@ export default {
 				this.quantity = 1;
 				return;
 			}
-			if (this.quantity > this.product.quantity) {
-				this.quantity = this.product.quantity;
+			if (this.quantity > this.getStock) {
+				this.quantity = this.getStock;
 				return;
 			}
 			this.quantity--;
 		},
-		handleInput(e) {
+		handleQuantityInput(e) {
 			this.quantity = e.target.value;
 		},
 		capitalize(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+		},
+		handleOptionChange() {
+			if (!this.validateObject(this.selected)) {
+				return;
+			}
+
+			// Get variant name
+			let optionArr = [];
+			for (let key in this.selected) {
+				optionArr.push(this.selected[key]);
+			}
+			const variantName = optionArr.join("/");
+
+			// Get the variant
+			const variant = this.product.variants.find(
+				(elem) => elem.name == variantName
+			);
+			// console.log("chosen variant", variant);
+			this.chosenVariant = variant;
+		},
+		handleAddCart() {
+			if (!this.validateObject(this.selected)) {
+				alert("Please select your options!");
+				console.log("add cart fails");
+				return;
+			}
+
+			const cartItem = {
+				variant: this.chosenVariant,
+				alias: this.product.alias,
+				id: this.product.id,
+				image: this.product.image_url,
+				quantity: this.quantity,
+				stock: this.getStock,
+			};
+
+			// Check if item is already in cart
+			for (let item of this.cart) {
+				if (item.variant.id === cartItem.variant.id) {
+					cartItem.quantity += item.quantity;
+					// console.log(
+					// 	`already in cart, quantity changed from ${item.quantity} to ${cartItem.quantity}`
+					// );
+
+					// Update the quantity
+					const payload = {
+						index: this.cart.indexOf(item),
+						quantity: cartItem.quantity,
+					};
+					this.ADD_QUANTITY(payload);
+					localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
+					return;
+				}
+			}
+			this.ADD_TO_CART(cartItem); // Add item to cart state
+			localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
+		},
+		// Function to validate all properties of object have truthy value
+		validateObject(object) {
+			for (let key in object) {
+				if (!object[key]) {
+					return false;
+				}
+			}
+			return true;
 		},
 	},
 };

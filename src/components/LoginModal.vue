@@ -70,33 +70,35 @@ export default {
     };
   },
 
-  methods: {
-    ...mapActions(["setLogin"]),
-    async handleLogin() {
-      try {
-        const res = await axios({
-          method: "POST",
-          url: "http://localhost:8081/api/auth/login",
-          data: {
-            email: this.email,
-            password: this.password,
-          },
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        });
 
-        if (res.data.success) {
-          console.log("logged in");
-          localStorage.setItem("token", res.data.data.token);
-          this.hideModal();
-          this.setLogin(true);
-        }
-      } catch (err) {
-        console.log(err);
-        this.displayError();
-      }
-    },
+	methods: {
+		...mapActions(["SET_LOGIN"]),
+		async handleLogin() {
+			try {
+				const res = await axios({
+					method: "POST",
+					url: "http://localhost:8081/api/auth/login",
+					data: {
+						email: this.email,
+						password: this.password,
+					},
+					headers: {
+						"Access-Control-Allow-Origin": "*",
+					},
+				});
+
+				if (res.data.success) {
+					console.log("logged in");
+					localStorage.setItem("token", res.data.data.token);
+					this.hideModal();
+					this.SET_LOGIN(true);
+				}
+			} catch (err) {
+				console.log(err);
+				this.displayError();
+			}
+		},
+
 
     hideModal() {
       this.$bvModal.hide("login-modal");
