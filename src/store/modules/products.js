@@ -6,8 +6,8 @@ export default {
 		dogs: [],
 	},
 	mutations: {
-		SET_CATS: (state, data) => (state.cats = data),
-		SET_DOGS: (state, data) => (state.dogs = data),
+		SET_CATS: (state, payload) => (state.cats = payload),
+		SET_DOGS: (state, payload) => (state.dogs = payload),
 	},
 	actions: {
 		GET_HOME_PRODUCTS: async ({ commit }) => {

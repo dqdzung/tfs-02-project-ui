@@ -123,7 +123,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions(["SET_CART", "ADD_TO_CART"]),
+		...mapActions(["SET_CART", "ADD_TO_CART", "ADD_QUANTITY"]),
 		plus() {
 			if (this.quantity < 1) {
 				this.quantity = 1;
@@ -178,6 +178,7 @@ export default {
 				console.log("add cart fails");
 				return;
 			}
+
 			const cartItem = {
 				variant: this.chosenVariant,
 				alias: this.product.alias,
@@ -187,6 +188,24 @@ export default {
 				stock: this.getStock,
 			};
 
+			// Check if item is already in cart
+			for (let item of this.cart) {
+				if (item.variant.id === cartItem.variant.id) {
+					cartItem.quantity += item.quantity;
+					console.log(
+						`already in cart, quantity changed from ${item.quantity} to ${cartItem.quantity}`
+					);
+
+					// Update the quantity
+					const payload = {
+						index: this.cart.indexOf(item),
+						quantity: cartItem.quantity,
+					};
+					this.ADD_QUANTITY(payload);
+					localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
+					return;
+				}
+			}
 			this.ADD_TO_CART(cartItem); // Add item to cart state
 			localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
 		},

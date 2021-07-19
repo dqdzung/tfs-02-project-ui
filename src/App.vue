@@ -29,7 +29,7 @@ export default {
 		LoginModal,
 	},
 	created() {
-		// Check cart status
+		// Check cart status on app load
 		const localCart = JSON.parse(localStorage.getItem("cart"));
 		if (localCart) {
 			this.SET_CART(localCart); // Set the cart state

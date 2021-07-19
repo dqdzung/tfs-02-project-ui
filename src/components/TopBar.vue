@@ -15,6 +15,9 @@
 				<div @click="handleClickCart" class="cart-wrapper">
 					Cart
 					<b-icon icon="cart-fill" variant="light" />
+					<span v-if="this.cart.length > 0" id="badge">{{
+						this.cart.length
+					}}</span>
 				</div>
 
 				<div
@@ -71,8 +74,22 @@ export default {
 	}
 
 	.cart-wrapper {
+		position: relative;
 		cursor: pointer;
 		padding-right: 15px;
+		#badge {
+			display: inline-block;
+			position: absolute;
+			border-radius: 50%;
+			background-color: red;
+			width: 15px;
+			height: 15px;
+			right: 6px;
+			bottom: 9px;
+			text-align: center;
+			font-size: 0.6rem;
+			font-weight: bold;
+		}
 	}
 
 	.search-wrapper {
