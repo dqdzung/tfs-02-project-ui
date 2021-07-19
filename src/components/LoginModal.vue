@@ -71,7 +71,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions(["setLogin"]),
+		...mapActions(["SET_LOGIN"]),
 		async handleLogin() {
 			try {
 				const res = await axios({
@@ -90,7 +90,7 @@ export default {
 					console.log("logged in");
 					localStorage.setItem("token", res.data.data.token);
 					this.hideModal();
-					this.setLogin(true);
+					this.SET_LOGIN(true);
 				}
 			} catch (err) {
 				console.log(err);

@@ -6,18 +6,18 @@ export default {
 		dogs: [],
 	},
 	mutations: {
-		setCats: (state, data) => (state.cats = data),
-		setDogs: (state, data) => (state.dogs = data),
+		SET_CATS: (state, payload) => (state.cats = payload),
+		SET_DOGS: (state, payload) => (state.dogs = payload),
 	},
 	actions: {
-		getHomeProducts: async ({ commit }) => {
+		GET_HOME_PRODUCTS: async ({ commit }) => {
 			try {
 				const res1 = await axios({
 					url:
 						"http://localhost:8081/api/products?category=cat&sort=date&order=desc&limit=6",
 				});
 				if (res1.data.success) {
-					commit("setCats", res1.data.data.products);
+					commit("SET_CATS", res1.data.data.products);
 					// console.log(res1.data.data);
 				}
 			} catch (err) {
@@ -30,7 +30,7 @@ export default {
 						"http://localhost:8081/api/products?category=dog&sort=date&order=desc&limit=6",
 				});
 				if (res2.data.success) {
-					commit("setDogs", res2.data.data.products);
+					commit("SET_DOGS", res2.data.data.products);
 					// console.log(res2.data.data);
 				}
 			} catch (err) {

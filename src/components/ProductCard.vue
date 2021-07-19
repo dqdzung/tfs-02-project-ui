@@ -1,7 +1,18 @@
 <template>
 	<div class="product-card shadow p-2 bg-white rounded">
 		<div class="image-wrapper">
-			<img :src="product.image_url" alt="product-image" @click="handleClick" />
+			<img
+				v-if="product.image_url"
+				:src="product.image_url"
+				alt="product-image"
+				@click="handleClick"
+			/>
+			<img
+				v-else
+				src="../assets/images/noImage.jpg"
+				alt="no-image"
+				@click="handleClick"
+			/>
 		</div>
 		<div class="text-center">{{ product.name }}</div>
 		<div class="info-wrapper">
@@ -12,8 +23,6 @@
 </template>
 
 <script>
-// import { toKebab } from "../helpers";
-
 import { mapActions } from "vuex";
 
 export default {
