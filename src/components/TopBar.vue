@@ -35,20 +35,21 @@ export default {
 	name: "TopBar",
 	computed: mapState({
 		loginStatus: (state) => state.login.status,
+		cart: (state) => state.cart.items,
 	}),
 	methods: {
-		...mapActions(["setLogin"]),
+		...mapActions(["SET_LOGIN"]),
 		showLoginModal() {
 			this.$bvModal.show("login-modal");
 		},
 		handleLogout() {
 			if (confirm("Are you sure?")) {
 				localStorage.removeItem("token");
-				this.setLogin(false);
+				this.SET_LOGIN(false);
 			}
 		},
 		handleClickCart() {
-			console.log("cart clicked, not implement yet");
+			console.log("cart clicked", this.cart);
 		},
 	},
 };

@@ -29,20 +29,23 @@ export default {
 		LoginModal,
 	},
 	created() {
-		this.getHomeProducts();
+		// Check cart status
+		const localCart = JSON.parse(localStorage.getItem("cart"));
+		if (localCart) {
+			this.SET_CART(localCart); // Set the cart state
+		}
+
+		this.GET_HOME_PRODUCTS();
+
+		// Check login status
 		const token = localStorage.getItem("token");
 		if (token) {
-			this.setLogin(true);
+			this.SET_LOGIN(true);
 		}
 	},
-	// updated() {
-	// 	const token = localStorage.getItem("token");
-	// 	if (!token) {
-	// 		this.setLogin(false);
-	// 	}
-	// },
+
 	methods: {
-		...mapActions(["getHomeProducts", "setLogin"]),
+		...mapActions(["GET_HOME_PRODUCTS", "SET_LOGIN", "SET_CART"]),
 	},
 };
 </script>

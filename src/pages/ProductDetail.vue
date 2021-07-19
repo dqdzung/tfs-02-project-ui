@@ -68,6 +68,7 @@
 
 <script>
 import axios from "axios";
+import { mapState, mapActions } from "vuex";
 
 export default {
 	async created() {
@@ -93,7 +94,11 @@ export default {
 		this.price = data.data.price;
 		// console.log(this.product);
 	},
+
 	computed: {
+		...mapState({
+			cart: (state) => state.cart.items,
+		}),
 		getPrice() {
 			return this.chosenVariant.price
 				? this.chosenVariant.price
@@ -105,6 +110,7 @@ export default {
 				: this.product.quantity;
 		},
 	},
+
 	data() {
 		return {
 			product: {},
@@ -113,10 +119,11 @@ export default {
 			selected: {},
 			radioOptions: {},
 			chosenVariant: {},
-			cart: [],
 		};
 	},
+
 	methods: {
+		...mapActions(["SET_CART", "ADD_TO_CART"]),
 		plus() {
 			if (this.quantity < 1) {
 				this.quantity = 1;
@@ -167,6 +174,7 @@ export default {
 		},
 		handleAddCart() {
 			if (!this.validateObject(this.selected)) {
+				alert("Please select your options!");
 				console.log("add cart fails");
 				return;
 			}
@@ -179,11 +187,10 @@ export default {
 				stock: this.getStock,
 			};
 
-			this.cart.push(cartItem);
-			localStorage.setItem("cart", JSON.stringify(this.cart));
-			console.log("added to cart", this.cart);
+			this.ADD_TO_CART(cartItem); // Add item to cart state
+			localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
 		},
-		// Function to validate all properties of object have value
+		// Function to validate all properties of object have truthy value
 		validateObject(object) {
 			for (let key in object) {
 				if (!object[key]) {
