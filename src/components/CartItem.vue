@@ -1,13 +1,17 @@
 <template>
   <div class="item">
     <img :src="item.image" />
-    <div class="text-center">{{item.product_name}}</div>
-    <p>${{item.price}}</p>
+    <div class="text-center" >
+      <div class="product-name">{{ item.name }}</div>
+      <div class="variant">Type: {{item.variant.name}}</div>
+
+    </div>
+    <p>${{ item.variant.price }}</p>
     <div @click="$emit('minus', item)" class="qty-minus">-</div>
-    <div class="qty">{{item.quantity}}</div>
-    <div  @click="$emit('plus', item)" class="qty-plus">+</div>
-    <div @click="$emit('remove',item)" class="del">Remove</div>
-    <div class="total-price">${{item.total}}</div>
+    <div class="qty">{{ item.quantity }}</div>
+    <div @click="$emit('plus', item)" class="qty-plus">+</div>
+    <div @click="$emit('remove', item)" class="del">Remove</div>
+    <div class="total-price">${{ total }}</div>
   </div>
 </template>
 
@@ -15,9 +19,13 @@
 export default {
   name: "CartItem",
   props: {
-        item: Object,
+    item: Object,
+  },
+  computed: {
+    total() {
+      return this.item.quantity * this.item.variant.price;
     },
-  
+  },
 };
 </script>
 
@@ -84,5 +92,9 @@ export default {
   line-height: 100px;
   margin-left: 10px;
   text-align: right;
+}
+.variant {
+  /* background:  #f5f4f4; */
+  color: #f1a644;
 }
 </style>

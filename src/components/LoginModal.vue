@@ -94,7 +94,7 @@ export default {
 					this.SET_LOGIN(true);
 				}
 			} catch (err) {
-				console.log(err);
+				// console.log(err);
 				this.displayError();
 			}
 		},
