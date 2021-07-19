@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <img :src="item.image" />
-    <div class="text-center" >
+    <div class="text-center" @click="handleClick">
       <div class="product-name">{{ item.name }}</div>
       <div class="variant">Type: {{item.variant.name}}</div>
 
@@ -26,6 +26,11 @@ export default {
       return this.item.quantity * this.item.variant.price;
     },
   },
+  methods: {
+    handleClick() {
+			this.$router.push(`/product/${this.item.alias}`);
+		},
+  }
 };
 </script>
 
@@ -46,6 +51,7 @@ export default {
   /* line-height: 50px; */
   margin: 0 0 0 20px;
   width: 200px;
+  cursor: pointer;
 }
 .item p {
   float: left;
