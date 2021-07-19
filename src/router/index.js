@@ -3,14 +3,14 @@ import VueRouter from "vue-router";
 // import jwt from "jsonwebtoken";
 
 const Home = () => import("../pages/Home.vue");
-const Login = () => import("../pages/Login.vue");
+const Login = () => import("../pages/LoginPage.vue");
 const About = () => import("../pages/About.vue");
 const Brands = () => import("../pages/Brands.vue");
 const Dogs = () => import("../pages/Dogs.vue");
 const Cats = () => import("../pages/Cats.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
-const Cart = () => import("../pages/Carts.vue")
+const Cart = () => import("../pages/Carts.vue");
 
 Vue.use(VueRouter);
 
