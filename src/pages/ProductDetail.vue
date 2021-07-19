@@ -180,6 +180,7 @@ export default {
 			}
 
 			const cartItem = {
+				name: this.product.name,
 				variant: this.chosenVariant,
 				alias: this.product.alias,
 				id: this.product.id,
