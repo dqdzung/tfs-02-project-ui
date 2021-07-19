@@ -18,6 +18,20 @@
 					<span v-if="this.cart.length > 0" id="badge">{{
 						this.cart.length
 					}}</span>
+
+					<!-- Cart dropdown -->
+					<div class="shopping-cart" v-if="isDropdown">
+						<div class="shopping-cart-header">
+							<div class="shopping-cart-total">
+								<span>{{
+									this.cart.length > 0
+										? `Total: $${this.GET_CART_TOTAL}`
+										: "No items in cart!"
+								}}</span>
+							</div>
+						</div>
+					</div>
+					<!--end dropdown -->
 				</div>
 
 				<div
@@ -32,14 +46,23 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
 	name: "TopBar",
-	computed: mapState({
-		loginStatus: (state) => state.login.status,
-		cart: (state) => state.cart.items,
-	}),
+	computed: {
+		...mapState({
+			loginStatus: (state) => state.login.status,
+			cart: (state) => state.cart.items,
+		}),
+		...mapGetters(["GET_CART_TOTAL"]),
+	},
+	data() {
+		return {
+			isDropdown: false,
+		};
+	},
+
 	methods: {
 		...mapActions(["SET_LOGIN"]),
 		showLoginModal() {
@@ -53,6 +76,7 @@ export default {
 		},
 		handleClickCart() {
 			console.log("cart clicked", this.cart);
+			this.isDropdown = !this.isDropdown;
 		},
 	},
 };
@@ -127,5 +151,42 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 	opacity: 0;
+}
+
+.shopping-cart {
+	position: absolute;
+	right: -13px;
+	top: 50px;
+	background: var(--mainColor);
+	z-index: 9999;
+	max-width: 320px;
+	width: 50vw;
+	border-radius: 5px;
+	padding: 20px;
+
+	&:after {
+		content: "";
+		bottom: 100%;
+		left: 89%;
+		border: solid transparent;
+		position: absolute;
+		pointer-events: none;
+		border-bottom-color: var(--mainColor);
+		border-width: 8px;
+		margin-left: -8px;
+	}
+
+	.shopping-cart-header {
+		border-bottom: 1px solid #e8e8e8;
+		padding-bottom: 15px;
+
+		.shopping-cart-total {
+			text-align: right;
+		}
+	}
+
+	@media (max-width: 575px) {
+		right: -7px;
+	}
 }
 </style>

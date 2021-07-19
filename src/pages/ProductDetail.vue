@@ -192,9 +192,9 @@ export default {
 			for (let item of this.cart) {
 				if (item.variant.id === cartItem.variant.id) {
 					cartItem.quantity += item.quantity;
-					console.log(
-						`already in cart, quantity changed from ${item.quantity} to ${cartItem.quantity}`
-					);
+					// console.log(
+					// 	`already in cart, quantity changed from ${item.quantity} to ${cartItem.quantity}`
+					// );
 
 					// Update the quantity
 					const payload = {
