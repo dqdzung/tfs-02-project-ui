@@ -10,7 +10,7 @@ const Dogs = () => import("../pages/Dogs.vue");
 const Cats = () => import("../pages/Cats.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
-const Cart = () => import("../pages/Carts.vue")
+const Cart = () => import("../pages/CartPage.vue")
 
 Vue.use(VueRouter);
 
