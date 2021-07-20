@@ -66,8 +66,12 @@ export default {
 				if (res.data.success) {
 					console.log("logged in");
 					localStorage.setItem("token", res.data.data.token);
-
+					this.hideModal();
 					this.SET_LOGIN(true);
+					if (this.$route.name === "Login") {
+						alert("Logged in, redirecting to home...");
+						this.$router.push("/");
+					}
 				}
 			} catch (err) {
 				console.log(err);
@@ -91,6 +95,10 @@ export default {
 			this.error.emailValid = false;
 			this.error.passwordValid = false;
 			this.error.message = "Wrong Email or Password!";
+		},
+
+		hideModal() {
+			this.$bvModal.hide("login-modal");
 		},
 	},
 };

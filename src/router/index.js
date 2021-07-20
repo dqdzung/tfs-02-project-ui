@@ -24,6 +24,12 @@ const routes = [
 		path: "/login",
 		name: "Login",
 		component: Login,
+		beforeEnter: (to, from, next) => {
+			if (localStorage.getItem("token")) {
+				next(from);
+				alert("You are already logged in!");
+			}
+		},
 	},
 	{
 		path: "/about",
