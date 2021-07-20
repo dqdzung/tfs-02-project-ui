@@ -35,7 +35,7 @@ export default {
 			this.SET_CART(localCart); // Set the cart state
 		}
 
-		this.GET_HOME_PRODUCTS();
+		// this.GET_HOME_PRODUCTS();
 
 		// Check login status
 		const token = localStorage.getItem("token");
@@ -45,7 +45,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions(["GET_HOME_PRODUCTS", "SET_LOGIN", "SET_CART"]),
+		...mapActions(["SET_LOGIN", "SET_CART"]),
 	},
 };
 </script>
