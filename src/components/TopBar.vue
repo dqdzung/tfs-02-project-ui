@@ -21,15 +21,31 @@
 
 					<!-- Cart dropdown -->
 					<div class="shopping-cart" v-if="isDropdown">
-						<div class="shopping-cart-header">
-							<div class="shopping-cart-total">
-								<span>{{
-									this.cart.length > 0
-										? `Total: $${this.GET_CART_TOTAL}`
-										: "No items in cart!"
-								}}</span>
-							</div>
+						<div class="shopping-cart-header d-flex justify-content-between">
+							<router-link to="/cart">VIEW CART</router-link>
+							<span>{{
+								this.cart.length > 0
+									? `Total: $${this.GET_CART_TOTAL}`
+									: "No items in cart!"
+							}}</span>
 						</div>
+
+						<ul>
+							<li v-for="item in this.cart" :key="item.variant.id">
+								<div class="cart-item-outer">
+									<img :src="item.image" />
+									<div
+										class="cart-item-inner d-flex flex-column justify-content-evenly"
+									>
+										<div>{{ item.name }}</div>
+										<div class="d-flex justify-content-between">
+											<span>Quantity: {{ item.quantity }}</span>
+											<span>Price: ${{ item.variant.price }}</span>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>
 					<!--end dropdown -->
 				</div>
@@ -50,6 +66,12 @@ import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
 	name: "TopBar",
+	created() {
+		window.addEventListener("click", this.close);
+	},
+	beforeDestroy() {
+		window.removeEventListener("click", this.close);
+	},
 	computed: {
 		...mapState({
 			loginStatus: (state) => state.login.status,
@@ -67,6 +89,7 @@ export default {
 		...mapActions(["SET_LOGIN"]),
 		showLoginModal() {
 			this.$bvModal.show("login-modal");
+			this.isDropdown = false;
 		},
 		handleLogout() {
 			if (confirm("Are you sure?")) {
@@ -76,7 +99,16 @@ export default {
 		},
 		handleClickCart() {
 			console.log("cart clicked", this.cart);
+			this.toggleDropdown();
+		},
+		toggleDropdown() {
 			this.isDropdown = !this.isDropdown;
+		},
+
+		close(e) {
+			if (!this.$el.contains(e.target)) {
+				this.isDropdown = false;
+			}
 		},
 	},
 };
@@ -160,9 +192,11 @@ export default {
 	background: var(--mainColor);
 	z-index: 9999;
 	max-width: 320px;
+
 	width: 50vw;
 	border-radius: 5px;
-	padding: 20px;
+	padding: 10px;
+	transition: all 0.5s;
 
 	&:after {
 		content: "";
@@ -187,6 +221,31 @@ export default {
 
 	@media (max-width: 575px) {
 		right: -7px;
+	}
+
+	img {
+		padding: 10px;
+		display: block;
+		margin: auto;
+		max-height: 100%;
+		max-width: 100%;
+	}
+
+	ul {
+		max-height: 500px;
+		overflow: auto;
+		padding: 10px;
+		list-style-type: none;
+		font-size: 0.8rem;
+
+		.cart-item-outer {
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+
+			.cart-item-inner {
+				padding: 10px;
+			}
+		}
 	}
 }
 </style>

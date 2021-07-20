@@ -203,12 +203,23 @@ export default {
 						quantity: cartItem.quantity,
 					};
 					this.ADD_QUANTITY(payload);
-					localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
+					this.saveCartToLocal(); // Cache cart to localStorage
 					return;
 				}
 			}
 			this.ADD_TO_CART(cartItem); // Add item to cart state
-			localStorage.setItem("cart", JSON.stringify(this.cart)); // Cache cart to localStorage
+			this.saveCartToLocal(); // Cache cart to localStorage
+		},
+
+		saveCartToLocal() {
+			localStorage.setItem("cart", JSON.stringify(this.cart));
+			this.addCartToast();
+		},
+		addCartToast() {
+			this.$toasted.show("Item added to cart!", {
+				position: "top-center",
+				duration: 1500,
+			});
 		},
 		// Function to validate all properties of object have truthy value
 		validateObject(object) {

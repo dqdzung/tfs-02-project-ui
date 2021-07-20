@@ -17,7 +17,7 @@
 		<div class="text-center">{{ product.name }}</div>
 		<div class="info-wrapper">
 			<h4 class="text-center">${{ product.price }}</h4>
-			<b-button class="button">View</b-button>
+			<b-button class="button" @click="handleClick">View</b-button>
 		</div>
 	</div>
 </template>
@@ -52,6 +52,7 @@ export default {
 	}
 
 	.image-wrapper {
+		cursor: pointer;
 		display: flex;
 		height: 200px;
 		width: 100%;
