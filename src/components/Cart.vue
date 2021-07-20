@@ -100,39 +100,32 @@ export default {
   methods: {
     ...mapActions(["ADD_QUANTITY", "REMOVE_ITEM"]),
     async checkVoucher() {
-      let data = {};
-      await axios
-        .get(`http://localhost:8081/api/orders/voucher/${this.vouchercode}`)
-        .then(function (response) {
-          data = response;
-        })
-        .catch(function (error) {
-          data = error.response.data;
+      try {
+        const { data } = await axios({
+          url: `http://localhost:8081/api/orders/voucher/${this.vouchercode}`,
         });
-      this.error.message = data.message;
-      console.log(data)
-      if (data.data.success == 1) {
-        this.finalCode = data.data.data.code;
-        let sale = data.data.data.discount;
-        console.log("sale",sale)
-        let unit = data.data.data.unit;
-        let maxSaleAmount = data.data.data.max_sale_amount;
-        switch (unit) {
-          case "percent":
-            this.discount = this.GET_CART_TOTAL * sale / 100
-            if(this.discount > maxSaleAmount) {
-              this.discount = maxSaleAmount
-            }
-            break;
-          default:
-            this.discount = sale
-            console.log(this.discount)
-          // code block
+        this.error.message = data.message;
+        if (data.success == 1) {
+          this.finalCode = data.data.code;
+          let sale = data.data.discount;
+          let unit = data.data.unit;
+          let maxSaleAmount = data.data.max_sale_amount;
+          switch (unit) {
+            case "percent":
+              this.discount = (this.GET_CART_TOTAL * sale) / 100;
+              if (this.discount > maxSaleAmount) {
+                this.discount = maxSaleAmount;
+              }
+              break;
+            default:
+              this.discount = sale;
+          }
         }
+      } catch (error) {
+        this.error.message = error.response.data.message;
       }
-      // const { data } = await axios({
-      //   url: `http://localhost:8081/api/orders/voucher/${this.vouchercode}`,
-      // });
+
+      
     },
     plus(i) {
       // const item = this.cart.find((item) => item.variant.id === i.variant.id);
@@ -167,7 +160,6 @@ export default {
       const payload = {
         index: index,
       };
-      console.log(index);
       this.REMOVE_ITEM(payload);
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
