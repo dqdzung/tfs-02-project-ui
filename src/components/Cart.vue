@@ -8,8 +8,8 @@
         <div class="total">Total</div>
       </div>
       <CartItem
-        v-for="item in cart.items"
-        :key="item.id"
+        v-for="item in this.cart"
+        :key="item.variant.id"
         :item="item"
         @plus="plus"
         @minus="minus"
@@ -17,30 +17,47 @@
       />
     </div>
     <div class="verticalLine"></div>
-    <div class="cart-sidebar">
+    <div class="cart">
       <div class="cart-total">
         <div class="head">
-          <div>Cart Totals</div>
+          <h3>Cart Totals</h3>
         </div>
-        <h4>Subtotal: ${{ subTotal }}</h4>
-        <h4>Discount:${{discount}}</h4>
-        <h4>Total:${{ total }}</h4>
+        <div class="summary">
+          <div class="">
+            <p>Subtotal:</p>
+            <p v-if="discount > 0">Discount:</p>
+            <p>Total:</p>
+          </div>
+          <div class="">
+            <p>${{ this.GET_CART_TOTAL }}</p>
+            <p v-if="discount > 0">${{ discount }}</p>
+            <p>${{ total }}</p>
+          </div>
+        </div>
         <button type="button" class="btn btn-danger">
           PROCEED TO CHECKOUT
         </button>
       </div>
 
-      <div class="coupon">
+      <div class="cart-total">
         <div class="head">
-          <div>Coupon</div>
+          <h5>Coupon</h5>
         </div>
-          <b-form-input
-            type="text"
-            placeholder="Enter coupon code"
-            v-model="vouchercode"
-          >
-          </b-form-input>
-          <button type="button" class="btn btn-outline-secondary">Apply coupon</button>
+        <b-form-input
+          class="input"
+          type="text"
+          placeholder="Enter coupon code"
+          v-model="vouchercode"
+        >
+        </b-form-input>
+        <ErrorMessage :message="this.error.message" />
+        <button
+          @click="checkVoucher"
+          type="button"
+          class="btn btn-outline-secondary"
+        >
+          Apply coupon
+        </button>
       </div>
     </div>
   </div>
@@ -48,90 +65,103 @@
 
 <script>
 import CartItem from "./CartItem.vue";
+import ErrorMessage from "./ErrorMessage.vue";
+import { mapState, mapActions, mapGetters } from "vuex";
+import axios from "axios";
 export default {
   name: "Cart",
   components: {
     CartItem,
+    ErrorMessage,
   },
   computed: {
-    subTotal() {
-      let sum = 0;
-      for (let i = 0; i < this.cart.items.length; i++) {
-        sum += this.cart.items[i].total;
-      }
-      return sum;
-    },
+    ...mapState({
+      cart: (state) => state.cart.items,
+    }),
+    ...mapGetters(["GET_CART_TOTAL"]),
+
     total() {
-      let sum = this.subTotal - this.discount;
-      if(sum<0) return 0;
+      let sum = this.GET_CART_TOTAL - this.discount;
+      if (sum < 0) return 0;
       return sum;
     },
   },
   data() {
     return {
       vouchercode: "",
-      subtotal: 0,
+      finalCode: "",
       discount: 0,
       totalBill: 0,
-      cart: {
-        items: [
-          {
-            id: 239,
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/91K1X8kQjoL._AC_SL1500_.jpg",
-            product_name:
-              "Reveal - Grain Free | Wet Canned Cat Food | 2.47oz Cans - Premium Nutrition, 100% Natural, No Additives, and Limited Ingredients",
-            alias:
-              "victor-purpose---performance-dry-dog-food-40-lbs1626370321823",
-            variant_name: "2kg/A",
-            price: 110,
-            total: 110,
-            original_price: 120,
-            quantity: 1,
-            stock: 20,
-            weight: "2kg",
-            product_id: 73,
-          },
-          {
-            id: 229,
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/91K1X8kQjoL._AC_SL1500_.jpg",
-            product_name: "VICTOR Purpose - Performance, Dry Dog Food 40 lbs",
-            alias:
-              "victor-purpose---performance-dry-dog-food-40-lbs1626370321823",
-            variant_name: "2kg/A",
-            price: 110,
-            total: 110,
-            original_price: 120,
-            stock: 30,
-            quantity: 1,
-            weight: "2kg",
-            product_id: 73,
-          },
-        ],
+      error: {
+        message: "",
       },
     };
   },
   methods: {
-    checkVoucher(){
+    ...mapActions(["ADD_QUANTITY", "REMOVE_ITEM"]),
+    async checkVoucher() {
+      try {
+        const { data } = await axios({
+          url: `http://localhost:8081/api/orders/voucher/${this.vouchercode}`,
+        });
+        this.error.message = data.message;
+        if (data.success == 1) {
+          this.finalCode = data.data.code;
+          let sale = data.data.discount;
+          let unit = data.data.unit;
+          let maxSaleAmount = data.data.max_sale_amount;
+          switch (unit) {
+            case "percent":
+              this.discount = (this.GET_CART_TOTAL * sale) / 100;
+              if (this.discount > maxSaleAmount) {
+                this.discount = maxSaleAmount;
+              }
+              break;
+            default:
+              this.discount = sale;
+          }
+        }
+      } catch (error) {
+        this.error.message = error.response.data.message;
+      }
+
       
-    }
-    ,plus(i) {
-      const item = this.cart.items.find((item) => item.id === i.id);
-      // const item = this.cart.items[this.cart.items.indexof(i)];
-      if (i.quantity === item.stock) return;
-      item.quantity++;
-      item.total += item.price;
+    },
+    plus(i) {
+      // const item = this.cart.find((item) => item.variant.id === i.variant.id);
+      let index = this.cart.indexOf(i);
+      let quantity = i.quantity + 1;
+      if (quantity >= i.stock) {
+        quantity = i.stock;
+      }
+      const payload = {
+        index: index,
+        quantity: quantity,
+      };
+
+      this.ADD_QUANTITY(payload);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     minus(i) {
-      const item = this.cart.items.find((item) => item.id === i.id);
-      if (item.quantity == 1) return;
-      item.quantity--;
-      item.total -= item.price;
+      let index = this.cart.indexOf(i);
+      let quantity = i.quantity - 1;
+      if (quantity < 1) {
+        quantity = 1;
+      }
+      const payload = {
+        index: index,
+        quantity: quantity,
+      };
+      this.ADD_QUANTITY(payload);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     remove(i) {
-      const index = this.cart.items.indexOf(i);
-      this.cart.items.splice(index, 1);
+      const index = this.cart.indexOf(i);
+      const payload = {
+        index: index,
+      };
+      this.REMOVE_ITEM(payload);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     },
   },
 };
@@ -144,6 +174,7 @@ export default {
 }
 .carts {
   display: flex;
+  margin-left: 3%;
   /* padding: 5% 10%; */
   /* flex-direction: column; */
 }
@@ -166,13 +197,13 @@ export default {
 .cart .head .price {
   display: inline-block;
   color: #777777;
-  margin-left: 250px;
+  margin-left: 33%;
   line-height: 40px;
 }
 .cart .head .quantity {
   display: inline-block;
   color: #777777;
-  margin-left: 100px;
+  margin-left: 105px;
   line-height: 40px;
 }
 .cart .head .total {
@@ -180,5 +211,19 @@ export default {
   color: #777777;
   line-height: 40px;
   float: right;
+}
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.summary p {
+  margin-bottom: 0%;
+}
+.input {
+  margin-top: 20px;
+}
+.cart-total {
+  margin-bottom: 20px;
 }
 </style>
