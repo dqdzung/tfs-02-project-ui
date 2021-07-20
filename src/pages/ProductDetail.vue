@@ -93,6 +93,7 @@ export default {
 		}
 		this.price = data.data.price;
 		// console.log(this.product);
+		document.title = `${this.product.name} - Pet Pal`;
 	},
 
 	computed: {
