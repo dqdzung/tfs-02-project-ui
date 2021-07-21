@@ -37,9 +37,10 @@
 						>
 					</b-navbar-nav>
 					<b-navbar-nav class="d-block d-sm-none">
-						<b-nav-item
+						<b-nav-item v-if="!loginStatus"
 							><router-link to="/login">Login</router-link></b-nav-item
 						>
+						<b-nav-item v-else @click="handleLogout">Logout</b-nav-item>
 					</b-navbar-nav>
 				</b-collapse>
 			</b-navbar>
@@ -48,8 +49,27 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
 	name: "Navbar",
+
+	computed: {
+		...mapState({
+			loginStatus: (state) => state.login.status,
+		}),
+	},
+
+	methods: {
+		...mapActions(["SET_LOGIN"]),
+
+		handleLogout() {
+			if (confirm("Are you sure?")) {
+				localStorage.removeItem("token");
+				this.SET_LOGIN(false);
+			}
+		},
+	},
 };
 </script>
 
