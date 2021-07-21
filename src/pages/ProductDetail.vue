@@ -16,8 +16,9 @@
 					</div>
 
 					<div class="quantity">
-						In Stock:
-						{{ getStock }}
+						<span>{{
+							getStock > 0 ? `In Stock: ${getStock}` : "SOLD OUT!"
+						}}</span>
 					</div>
 				</div>
 
@@ -93,6 +94,7 @@ export default {
 		}
 		this.price = data.data.price;
 		// console.log(this.product);
+		document.title = `${this.product.name} - Pet Pal`;
 	},
 
 	computed: {
