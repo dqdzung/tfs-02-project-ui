@@ -16,8 +16,9 @@
 					</div>
 
 					<div class="quantity">
-						In Stock:
-						{{ getStock }}
+						<span>{{
+							getStock > 0 ? `In Stock: ${getStock}` : "SOLD OUT!"
+						}}</span>
 					</div>
 				</div>
 
