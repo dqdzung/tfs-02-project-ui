@@ -90,7 +90,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions(["SET_LOGIN"]),
+		...mapActions(["SET_LOGIN", "SEARCH_PRODUCTS"]),
 		showLoginModal() {
 			this.$bvModal.show("login-modal");
 			this.isDropdown = false;
@@ -116,7 +116,15 @@ export default {
 		},
 
 		handleSearch() {
-			console.log(this.searchTerm);
+			if (!this.searchTerm) {
+				return;
+			}
+			console.log(encodeURIComponent(this.searchTerm));
+			this.SEARCH_PRODUCTS(
+				`http://localhost:8081/api/products?name=${this.searchTerm}`
+			);
+			this.$router.push({ path: "/search", query: { s: this.searchTerm } });
+			this.searchTerm = "";
 		},
 	},
 };
