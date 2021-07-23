@@ -10,7 +10,9 @@ const ProductsPage = () => import("../pages/ProductsPage.vue");
 const SearchResult = () => import("../pages/SearchResult.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
-const Cart = () => import("../pages/CartPage.vue");
+
+const Cart = () => import("../pages/CartPage.vue")
+const Checkout = () => import("../pages/Checkout.vue")
 
 Vue.use(VueRouter);
 
@@ -81,7 +83,13 @@ const routes = [
 		component: Cart,
 		meta: { title: `Cart - ${titleDefault}` },
 	},
-	// { path: "*", redirect: "/" },
+
+	{
+		path: "/checkout",
+		name: "Checkout",
+		component: Checkout,
+	}
+
 ];
 
 const router = new VueRouter({

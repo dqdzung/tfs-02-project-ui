@@ -7,6 +7,7 @@
         <div class="quantity">Quantity</div>
         <div class="total">Total</div>
       </div>
+      
       <CartItem
         v-for="item in this.cart"
         :key="item.variant.id"
@@ -34,7 +35,7 @@
             <p>${{ total }}</p>
           </div>
         </div>
-        <button type="button" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" @click="checkCart">
           PROCEED TO CHECKOUT
         </button>
       </div>
@@ -91,15 +92,111 @@ export default {
       vouchercode: "",
       finalCode: "",
       discount: 0,
-      totalBill: 0,
       error: {
         message: "",
       },
     };
   },
   methods: {
-    ...mapActions(["ADD_QUANTITY", "REMOVE_ITEM"]),
+    ...mapActions(["ADD_QUANTITY", "REMOVE_ITEM", "SET_LOGIN", "REMOVE_CART"]),
+    async checkCart() {
+      // ktra gio hang
+      let cart = {};
+      try {
+        cart = JSON.parse(localStorage.getItem("cart"));
+        if (cart == null) {
+          alert("Cart is empty, please add product to cart...");
+          return;
+        }
+      } catch (error) {
+        localStorage.removeItem("cart");
+        this.REMOVE_CART();
+        alert("Cart Shopping cart has been changed");
+        return;
+      }
+
+      //lấy token từ local, ktra
+      const token = localStorage.getItem("token");
+      if (token == null) {
+        this.SET_LOGIN(false);
+        alert("Please login to purchase...");
+        return;
+      }
+      // goi api
+      try {
+        const res = await axios({
+          method: "POST",
+          url: "http://localhost:8081/api/orders/cart",
+          data: {
+            total: this.GET_CART_TOTAL,
+            discount_amount: this.discount,
+            total_bill: this.total,
+            voucher_code: this.finalCode,
+            cart: cart,
+          },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + token,
+          },
+        });
+        let cartTotal = {
+          subtotal: this.GET_CART_TOTAL,
+          total: this.total,
+          discount: this.discount,
+          vouchercode: this.finalCode,
+        };
+        //mã hóa state sử dụng base64 và endcode url
+        let state = btoa(JSON.stringify(cartTotal));
+        state = encodeURI(state);
+        if (res.data.success == 1) {
+          this.$router.push(`/checkout?state=${state}`);
+        }
+      } catch (err) {
+        if (err.response.status == 401) {
+          this.SET_LOGIN(false);
+          alert("Login session expired, please login again");
+          return;
+        }
+        const data = err.response.data;
+        switch (data.message) {
+          case "voucher_not_exists":
+            this.discount = 0;
+            this.vouchercode = "";
+            this.finalCode = "";
+            alert("voucher not exists");
+            break;
+          case "voucher_expired":
+            this.discount = 0;
+            this.vouchercode = "";
+            this.finalCode = "";
+            alert("voucher_expired");
+            break;
+          case "error_product_changed":
+            this.discount = 0;
+            this.vouchercode = "";
+            this.finalCode = "";
+            //xóa sản phẩm khỏi giỏ hàng
+            this.remove(data.data);
+            alert("Shopping cart has been changed");
+            break;
+          case "invalid_calculate_total":
+            this.discount = 0;
+            this.vouchercode = "";
+            this.finalCode = "";
+            alert("Invalid Calculate Total");
+            break;
+          default:
+            alert("Bad request");
+            break;
+        }
+      }
+      //set data
+    },
     async checkVoucher() {
+      if (this.vouchercode == "") {
+        this.error.message = "Please enter code";
+        return;
+      }
       try {
         const { data } = await axios({
           url: `http://localhost:8081/api/orders/voucher/${this.vouchercode}`,
@@ -124,8 +221,6 @@ export default {
       } catch (error) {
         this.error.message = error.response.data.message;
       }
-
-      
     },
     plus(i) {
       // const item = this.cart.find((item) => item.variant.id === i.variant.id);
