@@ -11,8 +11,7 @@ const Cats = () => import("../pages/Cats.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
 const Cart = () => import("../pages/CartPage.vue")
-
-
+const Checkout = () => import("../pages/Checkout.vue")
 Vue.use(VueRouter);
 
 const routes = [
@@ -68,6 +67,11 @@ const routes = [
 		name: "Cart",
 		component: Cart,
 	},
+	{
+		path: "/checkout",
+		name: "Checkout",
+		component: Checkout,
+	}
 ];
 
 const router = new VueRouter({

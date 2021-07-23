@@ -8,4 +8,5 @@ export default {
 	actions: {
 		SET_LOGIN: ({ commit }, status) => commit("SET_STATUS", status),
 	},
+	
 };
