@@ -7,8 +7,8 @@
 				</b-breadcrumb-item>
 				<b-breadcrumb-item active>{{ this.catOrDog }}</b-breadcrumb-item>
 
-				<b-breadcrumb-item v-if="this.routeChange" active
-					>Page {{ this.routeChange }}</b-breadcrumb-item
+				<b-breadcrumb-item v-if="getPage" active
+					>Page {{ getPage }}</b-breadcrumb-item
 				>
 			</b-breadcrumb>
 
@@ -64,15 +64,15 @@
 
 				<!-- Pagination -->
 				<div class="pagination-wrapper mt-5">
-					<b-pagination-nav
+					<b-pagination
 						pills
 						size="lg"
-						:number-of-pages="this.getTotalPage"
 						align="center"
-						use-router
-						:link-gen="linkGen"
-						@input="handlePageChange"
-					></b-pagination-nav>
+						v-model="currentPage"
+						:total-rows="getTotal"
+						:per-page="getPageSize"
+						@change="changePage"
+					></b-pagination>
 					<!-- End Pagination -->
 				</div>
 			</div>
@@ -92,20 +92,20 @@ export default {
 	},
 
 	async created() {
-		const category = this.catOrDog == "Dogs" ? "dog" : "cat";
-		const payload = {
-			url: `http://localhost:8081/api/products?category=${category}&limit=8`,
-			category: this.catOrDog.toLowerCase(),
-		};
-		this.GET_PRODUCTS(payload);
+		this.getItems();
 
 		const res = await axios({
 			url: "http://localhost:8081/api/brands",
 		});
+
 		this.brands = res.data.data.slice(1, res.data.data.length);
+
+		this.selected = this.getSort;
+		this.currentPage = this.getPage;
+		this.filter = this.getFilter;
 	},
 	// mounted() {
-	// 	console.log(this.dogs);
+	// 	this.currentPage = this.getPage;
 	// },
 
 	data() {
@@ -118,6 +118,7 @@ export default {
 			],
 			brands: [],
 			filter: null,
+			currentPage: 1,
 		};
 	},
 
@@ -126,43 +127,59 @@ export default {
 			dogs: (state) => state.products.dogs,
 			cats: (state) => state.products.cats,
 		}),
-		routeChange() {
-			return this.$route.query.page;
+		getPage() {
+			return this.$route.query.page ? this.$route.query.page : 1;
 		},
 		catOrDog() {
 			return this.$route.name;
 		},
-		getTotalPage() {
+		getTotal() {
 			return this.catOrDog == "Dogs"
-				? this.dogs.total_page
-				: this.cats.total_page;
+				? this.dogs.total_elements
+				: this.cats.total_elements;
+		},
+		getPageSize() {
+			return this.catOrDog == "Dogs"
+				? this.dogs.page_size
+				: this.cats.page_size;
+		},
+		getSort() {
+			return this.$route.query.sort ? this.$route.query.sort : null;
+		},
+		getFilter() {
+			return this.$route.query.filter ? this.$route.query.filter : null;
 		},
 	},
 
 	watch: {
-		$route() {
-			this.handlePageChange();
+		$route(to, from) {
+			this.selected = this.getSort;
+			this.currentPage = this.getPage;
+			this.filter = this.getFilter;
+
+			console.log("route changed");
+
+			if (to.name != from.name) {
+				this.currentPage = 1;
+			}
+			this.getItems();
 		},
 	},
 
 	methods: {
 		...mapActions(["GET_PRODUCTS"]),
 
-		linkGen(pageNum) {
-			return pageNum === 1 ? "?" : `?page=${pageNum}`;
-		},
-
-		handlePageChange(page = 1) {
-			// console.log("page changed", page);
+		getItems() {
 			const category = this.catOrDog == "Dogs" ? "dog" : "cat";
-			let url = `http://localhost:8081/api/products?category=${category}&limit=8&page=${page}`;
 
-			if (this.selected) {
-				url += `&sort=price&order=${this.selected}`;
+			let url = `http://localhost:8081/api/products?category=${category}&page=${this.getPage}&limit=8`;
+
+			if (this.$route.query.sort) {
+				url += `&sort=price&order=${this.$route.query.sort}`;
 			}
 
-			if (this.filter) {
-				url += `&brand=${this.filter}`;
+			if (this.$route.query.filter) {
+				url += `&brand=${this.$route.query.filter}`;
 			}
 
 			const payload = {
@@ -172,16 +189,54 @@ export default {
 			this.GET_PRODUCTS(payload);
 		},
 
+		changePage(e) {
+			this.$router.push({
+				path: this.$route.path,
+				query: Object.assign({}, this.$route.query, { page: e }),
+			});
+		},
+
 		handleSort() {
-			if (this.$route.query.page) {
-				this.$router.push(`${this.$route.path}`);
+			// console.log(this.selected);
+			if (!this.selected) {
+				let query = Object.assign({}, this.$route.query);
+				delete query.sort;
+				this.$router.push({ query });
+				return;
 			}
-			this.handlePageChange();
+
+			if (this.filter) {
+				this.$router.push({
+					path: this.$route.path,
+					query: Object.assign({}, this.$route.query, { sort: this.selected }),
+				});
+				return;
+			}
+
+			this.$router.push({
+				path: this.$route.path,
+				query: { sort: this.selected },
+			});
 		},
 
 		handleFilter(brand) {
+			if (brand == this.getFilter) {
+				return;
+			}
 			this.filter = brand;
-			this.handlePageChange();
+
+			if (this.selected) {
+				this.$router.push({
+					path: this.$route.path,
+					query: Object.assign({}, this.$route.query, { filter: brand }),
+				});
+				return;
+			}
+
+			this.$router.push({
+				path: this.$route.path,
+				query: { filter: brand },
+			});
 		},
 
 		removeFilter() {
@@ -189,10 +244,10 @@ export default {
 				return;
 			}
 			this.filter = null;
-			if (this.$route.query.page) {
-				this.$router.push(`${this.$route.path}`);
-			}
-			this.handlePageChange();
+			let query = Object.assign({}, this.$route.query);
+			delete query.filter;
+			delete query.page;
+			this.$router.push({ query });
 		},
 	},
 };
@@ -244,6 +299,10 @@ export default {
 				&:hover {
 					color: var(--mainColor);
 				}
+			}
+
+			.remove-btn {
+				font-size: 0.9rem;
 			}
 		}
 	}

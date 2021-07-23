@@ -4,10 +4,12 @@ export default {
 	state: {
 		cats: [],
 		dogs: [],
+		results: [],
 	},
 	mutations: {
 		SET_CATS: (state, payload) => (state.cats = payload),
 		SET_DOGS: (state, payload) => (state.dogs = payload),
+		SET_RESULTS: (state, payload) => (state.results = payload),
 	},
 	actions: {
 		GET_HOME_PRODUCTS: async ({ commit }) => {
@@ -33,11 +35,12 @@ export default {
 					break;
 			}
 		},
+
+		SEARCH_PRODUCTS: async ({ commit }, url) => {
+			const res = await fetchProducts(url);
+			commit("SET_RESULTS", res);
+		},
 	},
-	// getters: {
-	// 	DOGS_PER_PAGE: (state) => state.dogs.products.length,
-	//   TOTAL_DOGS: (state) => state.dogs.total_elements
-	// },
 };
 
 const fetchProducts = async (url) => {
