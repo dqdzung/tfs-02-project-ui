@@ -7,7 +7,7 @@ const Login = () => import("../pages/LoginPage.vue");
 const About = () => import("../pages/About.vue");
 const Brands = () => import("../pages/Brands.vue");
 const ProductsPage = () => import("../pages/ProductsPage.vue");
-
+const SearchResult = () => import("../pages/SearchResult.vue");
 const SignUp = () => import("../pages/SignUp.vue");
 const ProductDetail = () => import("../pages/ProductDetail.vue");
 const Cart = () => import("../pages/CartPage.vue");
@@ -59,6 +59,12 @@ const routes = [
 		meta: { title: `For Cats - ${titleDefault}` },
 	},
 	{
+		path: "/search",
+		name: "Search",
+		component: SearchResult,
+		meta: { title: `Search Results - ${titleDefault}` },
+	},
+	{
 		path: "/signup",
 		name: "SignUp",
 		component: SignUp,
@@ -75,7 +81,7 @@ const routes = [
 		component: Cart,
 		meta: { title: `Cart - ${titleDefault}` },
 	},
-	{ path: "*", redirect: "/" },
+	// { path: "*", redirect: "/" },
 ];
 
 const router = new VueRouter({
