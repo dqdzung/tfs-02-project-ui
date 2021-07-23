@@ -4,11 +4,14 @@
 			class="d-flex align-items-center justify-content-between topbar-inner"
 		>
 			<div class="search-wrapper d-flex align-items-center d-none d-sm-flex">
-				<b-form-input
-					class="search text-center"
-					size="sm"
-					placeholder="What do you want to find?"
-				/>
+				<b-form class="search-form" @submit.prevent="handleSearch">
+					<b-form-input
+						class="search text-center"
+						size="sm"
+						placeholder="What do you want to find?"
+						v-model="searchTerm"
+					/>
+				</b-form>
 				<b-icon icon="search" />
 			</div>
 			<div class="login-cart-wrapper d-flex justify-content-between ">
@@ -82,11 +85,12 @@ export default {
 	data() {
 		return {
 			isDropdown: false,
+			searchTerm: "",
 		};
 	},
 
 	methods: {
-		...mapActions(["SET_LOGIN"]),
+		...mapActions(["SET_LOGIN", "SEARCH_PRODUCTS"]),
 		showLoginModal() {
 			this.$bvModal.show("login-modal");
 			this.isDropdown = false;
@@ -109,6 +113,18 @@ export default {
 			if (!this.$el.contains(e.target)) {
 				this.isDropdown = false;
 			}
+		},
+
+		handleSearch() {
+			if (!this.searchTerm) {
+				return;
+			}
+			console.log(encodeURIComponent(this.searchTerm));
+			this.SEARCH_PRODUCTS(
+				`http://localhost:8081/api/products?name=${this.searchTerm}`
+			);
+			this.$router.push({ path: "/search", query: { s: this.searchTerm } });
+			this.searchTerm = "";
 		},
 	},
 };
@@ -151,6 +167,9 @@ export default {
 	.search-wrapper {
 		width: 35%;
 		min-width: 250px;
+		.search-form {
+			width: 100%;
+		}
 	}
 
 	.b-icon[aria-label="search"] {

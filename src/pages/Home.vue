@@ -9,7 +9,7 @@
 				</div>
 				<div class="product-container ">
 					<Product
-						v-for="product in dogs"
+						v-for="product in dogs.products"
 						:key="product.id"
 						:product="product"
 					/>
@@ -23,7 +23,7 @@
 				</div>
 				<div class="product-container ">
 					<Product
-						v-for="product in cats"
+						v-for="product in cats.products"
 						:key="product.id"
 						:product="product"
 					/>
@@ -36,7 +36,7 @@
 <script>
 import HeroBanner from "../components/HeroBanner.vue";
 import Product from "../components/ProductCard.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 // import axios from "axios";
 
@@ -45,10 +45,16 @@ export default {
 		HeroBanner,
 		Product,
 	},
+	created() {
+		this.GET_HOME_PRODUCTS();
+	},
 	computed: mapState({
 		cats: (state) => state.products.cats,
 		dogs: (state) => state.products.dogs,
 	}),
+	methods: {
+		...mapActions(["GET_HOME_PRODUCTS"]),
+	},
 };
 </script>
 

@@ -23,15 +23,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
 	name: "Product",
 	props: {
 		product: Object,
 	},
 	methods: {
-		...mapActions(["getProduct"]),
 		handleClick() {
 			this.$router.push(`/product/${this.product.alias}`);
 		},
