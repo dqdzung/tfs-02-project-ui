@@ -146,17 +146,18 @@
 						<div class=" total">${{ item.quantity * item.variant.price }}</div>
 					</div>
 
-					<div class="cart" v-if="this.state.discount > 0">
-						<div class="col-50"><h5>Discount</h5></div>
-						<div class="col-25"></div>
-						<div class="col-25">
-							<h5>${{ this.state.discount }}</h5>
+					<div class="d-flex flex-column pt-2 total-wrapper">
+						<div
+							v-if="this.state.discount > 0"
+							class="d-flex justify-content-between"
+						>
+							<h6>Discount</h6>
+							<h6 class="px-2">- ${{ this.state.discount }}</h6>
 						</div>
-					</div>
-
-					<div class="d-flex justify-content-between pt-2 total-wrapper">
-						<h4>Total</h4>
-						<h4>${{ this.state.total }}</h4>
+						<div class="d-flex justify-content-between pt-3">
+							<h4>Total</h4>
+							<h4>${{ this.state.total }}</h4>
+						</div>
 					</div>
 					<p></p>
 					<input

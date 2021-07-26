@@ -45,12 +45,14 @@
 						<div class="d-flex justify-content-between">
 							<p>Subtotal:</p>
 							<p class="bold">${{ this.GET_CART_TOTAL }}</p>
-							<p v-if="discount > 0">Discount:</p>
+						</div>
+						<div v-if="discount > 0" class="d-flex justify-content-between">
+							<p>Discount:</p>
+							<p>- ${{ discount }}</p>
 						</div>
 						<div class="d-flex justify-content-between">
 							<p>Total:</p>
 							<p class="bold">${{ total }}</p>
-							<p v-if="discount > 0">${{ discount }}</p>
 						</div>
 					</div>
 					<button type="button" class="btn btn-danger" @click="checkCart">
