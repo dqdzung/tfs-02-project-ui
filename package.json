@@ -9,6 +9,7 @@
 		"json-server": "json-server --watch db.json"
 	},
 	"dependencies": {
+		"@vue-stripe/vue-stripe": "^4.2.5",
 		"axios": "^0.21.1",
 		"bcryptjs": "^2.4.3",
 		"bootstrap": "^5.0.2",
@@ -16,6 +17,7 @@
 		"core-js": "^3.6.5",
 		"jsonwebtoken": "^8.5.1",
 		"mapbox-gl": "^2.3.1",
+		"stripe": "^8.165.0",
 		"vue": "^2.6.11",
 		"vue-router": "^3.5.2",
 		"vue-toasted": "^1.1.28",
