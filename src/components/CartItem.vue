@@ -1,106 +1,91 @@
 <template>
-  <div class="item">
-    <img :src="item.image" />
-    <div class="text-center" @click="handleClick">
-      <div class="product-name">{{ item.name }}</div>
-      <div class="variant">Type: {{item.variant.name}}</div>
+	<tr class="item">
+		<td @click="$emit('remove', item)" class="del">
+			<b-icon icon="x-square-fill" variant="danger"></b-icon>
+		</td>
 
-    </div>
-    <p>${{ item.variant.price }}</p>
-    <div @click="$emit('minus', item)" class="qty-minus">-</div>
-    <div class="qty">{{ item.quantity }}</div>
-    <div @click="$emit('plus', item)" class="qty-plus">+</div>
-    <div @click="$emit('remove', item)" class="del">Remove</div>
-    <div class="total-price">${{ total }}</div>
-  </div>
+		<td class="image-wrapper">
+			<img :src="item.image" />
+		</td>
+		<td class="item-info" @click="handleClick">
+			<div class="product-name">{{ item.name }}</div>
+			<div class="variant">Type: {{ item.variant.name }}</div>
+		</td>
+		<td class="p-2 mx-2 text-center">${{ item.variant.price }}</td>
+		<td class="mx-3">
+			<div class="d-flex justify-content-around">
+				<input
+					type="button"
+					value="-"
+					@click="$emit('minus', item)"
+					class="qty-minus"
+				/>
+				<div class="qty">{{ item.quantity }}</div>
+				<input
+					type="button"
+					value="+"
+					@click="$emit('plus', item)"
+					class="qty-plus"
+				/>
+			</div>
+		</td>
+		<td class="text-center p-2 mx-2">${{ total }}</td>
+	</tr>
 </template>
 
 <script>
 export default {
-  name: "CartItem",
-  props: {
-    item: Object,
-  },
-  computed: {
-    total() {
-      return this.item.quantity * this.item.variant.price;
-    },
-  },
-  methods: {
-    handleClick() {
+	name: "CartItem",
+	props: {
+		item: Object,
+	},
+	computed: {
+		total() {
+			return this.item.quantity * this.item.variant.price;
+		},
+	},
+	methods: {
+		handleClick() {
 			this.$router.push(`/product/${this.item.alias}`);
 		},
-  }
+	},
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .item {
-  width: 100%;
-  border-bottom: 1px solid #bfbfbf;
-  overflow: hidden;
-  padding: 10px 0;
-  display: block;
-}
-.item img {
-  height: 100px;
-  float: left;
-}
-.item .text-center {
-  float: left;
-  /* line-height: 50px; */
-  margin: 0 0 0 20px;
-  width: 200px;
-  cursor: pointer;
-}
-.item p {
-  float: left;
-  width: 90px;
-  line-height: 100px;
-  margin: 0 0 0 35px;
-  text-align: center;
-}
-.item .qty-minus {
-  float: left;
-  width: 20px;
-  line-height: 100px;
-  margin-left: 60px;
-  text-align: center;
-  cursor: pointer;
-}
-.item .qty {
-  float: left;
-  width: 20px;
-  line-height: 100px;
-  margin-left: 20px;
-  text-align: center;
-}
-.item .qty-plus {
-  float: left;
-  width: 20px;
-  line-height: 100px;
-  margin-left: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-.item .del {
-  float: left;
-  width: 80px;
-  line-height: 100px;
-  margin-left: 60px;
-  cursor: pointer;
-  text-decoration: underline;
-  color: #ed277f;
-}
-.item .total-price {
-  float: left;
-  width: 80px;
-  line-height: 100px;
-  margin-left: 10px;
-  text-align: right;
-}
-.variant {
-  /* background:  #f5f4f4; */
-  color: #f1a644;
+	width: 100%;
+	padding: 5px 0;
+
+	.image-wrapper {
+		height: 100px;
+		width: 100px;
+		flex-shrink: 0;
+		img {
+			/* width: 100%; */
+			display: block;
+			height: 100%;
+			padding: 10px;
+			margin: 0 auto;
+		}
+	}
+
+	.item-info {
+		max-width: 450px;
+		cursor: pointer;
+	}
+
+	.variant {
+		color: var(--mainColor);
+	}
+
+	input[type="button"] {
+		width: 30px;
+		border: none;
+		transition: all 0.5s;
+		&:hover {
+			background-color: var(--mainColor);
+		}
+	}
 }
 </style>
