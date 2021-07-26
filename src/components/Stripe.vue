@@ -11,7 +11,7 @@ export default {
 	name: "Stripe",
 	mounted() {
 		const stripe = window.Stripe(
-			"pk_test_51JFBJVAuOJBTYkNRKfuqR2SfLeoI7R1Ydkjc3yeBzESrHzR2fpS8uZi0i36lMRLNNaWN8GnTpBzP3bAgHxuFYNnG00Cgvss2Mp"
+			"pk_test_51JFwLUFFH821MiaEwZIGg8yG1zLjKbAinyhcAo1pB0ZOCj9gfqxZxQ8qyix8NkQOGHBZh8Ii7tzLneYXQoXcthwI000we09WYn"
 		);
 		this.stripe = stripe;
 		let elements = stripe.elements();
